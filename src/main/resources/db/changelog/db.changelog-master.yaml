@@ -1,0 +1,66 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/db.changelog-lesson1.yaml
+  - changeSet:
+      id: 1
+      author: ulxanxv
+      changes:
+        - createTable:
+            tableName: credential
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: varchar(255)
+        - insert:
+            tableName: credential
+            columns:
+              - column:
+                  name: name
+                  value: "Ulxanxv"
+              - column:
+                  name: password
+                  value: "$2y$12$.EzBlMBHH9jp5lHgZi4Fw.sEaIeaM2E2G3.h5oE7L8IY2YDUhB/la"
+              - column:
+                  name: role
+                  value: "USER"
+        - insert:
+            tableName: credential
+            columns:
+              - column:
+                  name: name
+                  value: "Lux"
+              - column:
+                  name: password
+                  value: "$2y$12$RrVi5cJ94Yo93whKACUzfec2qcVkNOt5QbPyn6eO56VUheLQnw8Fu"
+              - column:
+                  name: role
+                  value: "MODER"
+        - insert:
+            tableName: credential
+            columns:
+              - column:
+                  name: name
+                  value: "Paul"
+              - column:
+                  name: password
+                  value: "$2y$12$eE1e7YoLP5CIcNccAHWgLOsnGssGmKH6V32.d.KpfE3DzxYuCV4v2"
+              - column:
+                  name: role
+                  value: "ADMIN"
