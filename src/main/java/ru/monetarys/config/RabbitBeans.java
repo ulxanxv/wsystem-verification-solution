@@ -22,6 +22,15 @@ public class RabbitBeans {
 
     public static final String QUEUE_NAME = "monetarys";
 
+
+
+
+
+
+
+
+
+
     @Bean
     public CountDownLatch countDownLatch() {
         return new CountDownLatch(1);
