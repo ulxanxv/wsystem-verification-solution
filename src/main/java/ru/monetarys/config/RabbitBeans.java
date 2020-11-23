@@ -17,7 +17,6 @@ import java.util.concurrent.CountDownLatch;
 public class RabbitBeans {
 
     public static final String TOPIC_EXCHANGE_NAME = "monetarys-exchange";
-
     public static final String QUEUE_NAME = "monetarys";
 
     @Bean
