@@ -1,5 +1,7 @@
 package ru.monetarys.rabbit;
 
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +10,11 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.CountDownLatch;
 
 @Component
+@Slf4j
+@Getter
 public class Receiver {
 
-    private CountDownLatch latch;
-
-    private final Logger logger = LoggerFactory.getLogger(Receiver.class);
+    private final CountDownLatch latch;
 
     @Autowired
     public Receiver(CountDownLatch latch) {
@@ -20,12 +22,8 @@ public class Receiver {
     }
 
     public void receiveMessage(String message) {
-        logger.info("Received message <" + message + ">");
+        log.info("Received message <" + message + ">");
         latch.countDown();
-    }
-
-    public CountDownLatch getLatch() {
-        return latch;
     }
 
 }
