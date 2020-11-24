@@ -5,7 +5,6 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,19 +13,17 @@ import ru.monetarys.dto.GetClientInfoResponse;
 
 import java.util.Collections;
 import java.util.Objects;
-import java.util.Random;
 
 @Data
 @Service
 @Slf4j
-@PropertySource("classpath:service.properties")
 public class ClientProfileService {
 
     @Autowired
     private RestTemplate restTemplate;
 
     @Value("${service.host}")
-    private static String HOST;
+    private String HOST;
 
     public GetClientInfoResponse getClientInfoByGUID(@NonNull String guid) {
         ResponseEntity<GetClientInfoResponse> response = restTemplate.getForEntity(

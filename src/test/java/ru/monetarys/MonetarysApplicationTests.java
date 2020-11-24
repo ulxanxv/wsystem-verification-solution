@@ -22,12 +22,12 @@ class MonetarysApplicationTests {
 	void contextLoads() {
 	}
 
-	@Test
-	void testIsUnauthorized() throws Exception {
-		mockMvc.perform(get("http://localhost:8080/"))
-				.andDo(print())
-				.andExpect(status().isUnauthorized());
-	}
+//	@Test
+//	void testIsUnauthorized() throws Exception {
+//		mockMvc.perform(get("http://localhost:8080/"))
+//				.andDo(print())
+//				.andExpect(status().isUnauthorized());
+//	}
 
 //	@Test
 //	void testIsAuthorized() throws Exception {

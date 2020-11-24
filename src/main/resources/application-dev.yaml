@@ -16,3 +16,7 @@ server:
   error:
     whitelabel:
       enabled: false
+
+## Service url
+service:
+  host: "http://clientprofile.internal.anybank.ru"
