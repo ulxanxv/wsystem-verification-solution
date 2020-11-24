@@ -2,28 +2,50 @@ package ru.monetarys.service;
 
 import lombok.Data;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.monetarys.dto.GetClientInfoResponse;
 
 import java.util.Collections;
+import java.util.Objects;
+import java.util.Random;
 
 @Data
 @Service
+@Slf4j
+@PropertySource("classpath:service.properties")
 public class ClientProfileService {
 
     @Autowired
     private RestTemplate restTemplate;
 
-    private static final String HOST = "http://clientprofile.internal.anybank.ru";
+    @Value("${service.host}")
+    private static String HOST;
 
     public GetClientInfoResponse getClientInfoByGUID(@NonNull String guid) {
-        return restTemplate.getForObject(
+        ResponseEntity<GetClientInfoResponse> response = restTemplate.getForEntity(
                 HOST + "/v1/clientInfoByGUID/{guid}",
                 GetClientInfoResponse.class,
                 Collections.singletonMap("guid", guid)
         );
+
+        if (response.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
+            log.error("Profile not found : не найден профиль клиента с идентификатором — " + guid);
+        }
+
+        GetClientInfoResponse clientInfo = response.getBody();
+
+        if (Objects.requireNonNull(clientInfo).getClientGeneralInfo().getAccountList().size() > 0) {
+            log.error("Account not found : не найден счёт клиента с идентификатором — " + guid);
+        }
+
+        return clientInfo;
     }
 
     public GetClientInfoResponse getClientInfoByPhone(@NonNull String phone) {
