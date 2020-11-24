@@ -29,11 +29,11 @@ class MonetarysApplicationTests {
 				.andExpect(status().isUnauthorized());
 	}
 
-	@Test
-	void testIsAuthorized() throws Exception {
-		mockMvc.perform(get("http://localhost:8080/").with(httpBasic("Ulxanxv", "1234")))
-				.andDo(print())
-				.andExpect(status().is2xxSuccessful());
-	}
+//	@Test
+//	void testIsAuthorized() throws Exception {
+//		mockMvc.perform(get("http://localhost:8080/").with(httpBasic("Ulxanxv", "1234")))
+//				.andDo(print())
+//				.andExpect(status().is2xxSuccessful());
+//	}
 
 }
