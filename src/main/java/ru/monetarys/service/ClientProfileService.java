@@ -38,7 +38,7 @@ public class ClientProfileService {
 
         GetClientInfoResponse clientInfo = response.getBody();
 
-        if (Objects.requireNonNull(clientInfo).getClientGeneralInfo().getAccountList().size() > 0) {
+        if (Objects.requireNonNull(clientInfo).getClientGeneralInfo().getAccountList().size() == 0) {
             log.error("Account not found : не найден счёт клиента с идентификатором — " + guid);
         }
 
