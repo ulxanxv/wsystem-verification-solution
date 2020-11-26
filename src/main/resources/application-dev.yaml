@@ -6,9 +6,9 @@ spring:
     password: "1234"
 
 ## DDL
-  jpa:
-    hibernate:
-      ddl-auto: none
+jpa:
+  hibernate:
+    ddl-auto: none
 
 ## Server
 server:
@@ -17,6 +17,8 @@ server:
     whitelabel:
       enabled: false
 
-## Service url
-service:
-  host: "http://clientprofile.internal.anybank.ru"
+## ClientProfile service properties
+client-profile:
+  host: clientprofile.internal.anybank.ru
+  secret: QWRtaW46YWRtaW4=
+  client-info-by-guid-path: /v1/clientInfoByGUID/{guid}

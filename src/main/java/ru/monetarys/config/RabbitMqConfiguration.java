@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.concurrent.CountDownLatch;
 
 @Configuration
-public class RabbitBeans {
+public class RabbitMqConfiguration {
 
     public static final String TOPIC_EXCHANGE_NAME = "monetarys-exchange";
 

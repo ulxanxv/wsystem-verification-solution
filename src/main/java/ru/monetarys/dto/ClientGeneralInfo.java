@@ -13,25 +13,8 @@ public class ClientGeneralInfo {
 
 
 
-    @JsonProperty(value = "personalInfo", required = false)
-    private ClientPersonalInfo personalInfo;
-
-    @JsonProperty(value = "identityDoc", required = false)
-    private ClientIdentityDoc identityDoc;
-
-    @JsonProperty(value = "accountList", required = false)
-    private List<ClientAccountInfo> accountList;
-
-    @JsonProperty(value = "addresses", required = false)
-    private ClientAddressesInfo addresses;
-
-    @JsonProperty(value = "contacts", required = false)
-    private ClientContactsInfo contacts;
-
-    @JsonProperty(value = "cardList", required = false)
-    private List<ClientCardInfo> cardList;
-
-    @JsonProperty(value = "depList", required = false)
-    private List<ClientDepositeInfo> depList;
+    private ClientPersonalInfo          personalInfo;
+    private List<ClientAccountInfo>     accountList;
+    private ClientContactsInfo          contacts;
 
 }
