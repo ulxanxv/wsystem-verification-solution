@@ -43,7 +43,7 @@ public class ClientProfileServiceImpl implements ClientProfileService {
            return null;
         }
 
-        if (Objects.requireNonNull(clientInfo).getAccountList() == null) {
+        if ((Objects.requireNonNull(clientInfo).getAccountList() == null) || (clientInfo.getAccountList().size() == 0)) {
             throw new AccountNotFound(AccountNotFound.ErrorCode.ACCOUNT_NOT_FOUND, "Не найден ни один счёт клиента", guid);
         }
 
