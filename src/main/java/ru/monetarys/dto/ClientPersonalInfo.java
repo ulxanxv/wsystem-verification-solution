@@ -12,8 +12,6 @@ public class ClientPersonalInfo {
     @JsonProperty(value = "firstName", required = true)
     private String firstName;
 
-
-
     private String citizenshipCountryCode;
     private String middleName;
 

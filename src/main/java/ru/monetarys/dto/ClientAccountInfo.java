@@ -14,19 +14,19 @@ public class ClientAccountInfo {
     @JsonProperty(value = "accType", required = true)
     private String accountType;
 
-    @JsonProperty(value = "bankName", required = true)
-    private String bankName;
-
-    @JsonProperty(value = "balance", required = true)
-    private BigDecimal balance;
-
     @JsonProperty(value = "accId", required = true)
     private String accountId;
 
     @JsonProperty(value = "cur", required = true)
-    private String cur;
+    private String currency;
 
-    @JsonProperty(value = "bic", required = true)
+    @JsonProperty(required = true)
+    private String bankName;
+
+    @JsonProperty(required = true)
+    private BigDecimal balance;
+
+    @JsonProperty( required = true)
     private String bic;
 
 }

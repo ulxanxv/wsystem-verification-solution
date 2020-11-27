@@ -18,7 +18,14 @@ server:
       enabled: false
 
 ## ClientProfile service properties
-client-profile:
-  host: clientprofile.internal.anybank.ru
-  secret: QWRtaW46YWRtaW4=
-  client-info-by-guid-path: /v1/clientInfoByGUID/{guid}
+application:
+  client-profile-service:
+    host: http://clientprofile.internal.anybank.ru
+    auth-header-name: Authorization
+    secret: QWRtaW46YWRtaW4=
+    client-info-by-guid-path: /v1/clientInfoByGUID
+  service-properties:
+    connection-timeout: 10000
+    read-timeout: 30000
+    max-connection-total: 1000
+    max-connection-per-route: 10

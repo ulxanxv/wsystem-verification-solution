@@ -9,12 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.monetarys.dto.ClientGeneralInfo;
-import ru.monetarys.exceptions.AccountNotFound;
-import ru.monetarys.exceptions.ClientProfileNotFound;
-import ru.monetarys.interceptors.HeaderRequestInterceptor;
+import ru.monetarys.exceptions.ClientException;
+import ru.monetarys.exceptions.ErrorCode;
 
-import java.util.Collections;
-import java.util.Objects;
+import java.net.URI;
 
 @Data
 @Service
@@ -22,29 +20,26 @@ import java.util.Objects;
 public class ClientProfileServiceImpl implements ClientProfileService {
 
     private final RestTemplate restTemplate;
-    private final ClientProfileApiProperties apiProperties;
+    private final ClientProfileProperties apiProperties;
 
     public ClientGeneralInfo getClientInfoByGUID(@NonNull String guid) {
-        restTemplate.getInterceptors().add(new HeaderRequestInterceptor("Authorization", "Basic " + apiProperties.getSecret()));
+        URI uri = UriComponentsBuilder.fromHttpUrl(apiProperties.getClientProfileService().getHost())
+                .path(apiProperties.getClientProfileService().getClientInfoByGuidPath())
+                .queryParam("clientGUID", guid)
+                .build()
+                .toUri();
 
-        ResponseEntity<ClientGeneralInfo> response = restTemplate.getForEntity(
-                UriComponentsBuilder.newInstance().scheme("http").host(apiProperties.getHost()).path(apiProperties.getClientInfoByGuidPath()).build().toUriString(),
-                ClientGeneralInfo.class,
-                Collections.singletonMap("guid", guid)
-        );
-
-        if (response.getStatusCode() != HttpStatus.OK) {
-            throw new ClientProfileNotFound(ClientProfileNotFound.ErrorCode.PROFILE_NOT_FOUND, "Не найден профиль клиента", guid);
-        }
+        ResponseEntity<ClientGeneralInfo> response =
+                restTemplate.getForEntity(uri.toString(), ClientGeneralInfo.class);
 
         ClientGeneralInfo clientInfo;
 
-        if ((clientInfo = response.getBody()) == null) {
-           return null;
+        if ((response.getStatusCode() != HttpStatus.OK) || (clientInfo = response.getBody()) == null) {
+            throw new ClientException(ErrorCode.PROFILE_NOT_FOUND, "Не найден профиль клиента", guid);
         }
 
-        if ((Objects.requireNonNull(clientInfo).getAccountList() == null) || (clientInfo.getAccountList().size() == 0)) {
-            throw new AccountNotFound(AccountNotFound.ErrorCode.ACCOUNT_NOT_FOUND, "Не найден ни один счёт клиента", guid);
+        if ((clientInfo.getAccountList() == null) || (clientInfo.getAccountList().size() == 0)) {
+            throw new ClientException(ErrorCode.ACCOUNT_NOT_FOUND, "Не найден ни один счёт клиента", guid);
         }
 
         return clientInfo;

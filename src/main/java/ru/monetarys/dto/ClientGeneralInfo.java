@@ -11,8 +11,6 @@ public class ClientGeneralInfo {
     @JsonProperty(value = "guid", required = true)
     private String guid;
 
-
-
     private ClientPersonalInfo          personalInfo;
     private List<ClientAccountInfo>     accountList;
     private ClientContactsInfo          contacts;
