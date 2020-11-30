@@ -12,7 +12,7 @@ jpa:
 
 ## Server
 server:
-  port: 8080
+  port: 8088
   error:
     whitelabel:
       enabled: false
@@ -21,9 +21,10 @@ server:
 application:
   client-profile-service:
     host: http://clientprofile.internal.anybank.ru
-    auth-header-name: Authorization
     secret: QWRtaW46YWRtaW4=
     client-info-by-guid-path: /v1/clientInfoByGUID
+    profile-not-found-message: Не найден профиль клиента
+    account-not-found-message: Не найден ни один счёт клиента
   service-properties:
     connection-timeout: 10000
     read-timeout: 30000

@@ -20,26 +20,26 @@ import java.net.URI;
 public class ClientProfileServiceImpl implements ClientProfileService {
 
     private final RestTemplate restTemplate;
-    private final ClientProfileProperties apiProperties;
+    private final ApplicationProperties applicationProperties;
 
     public ClientGeneralInfo getClientInfoByGUID(@NonNull String guid) {
-        URI uri = UriComponentsBuilder.fromHttpUrl(apiProperties.getClientProfileService().getHost())
-                .path(apiProperties.getClientProfileService().getClientInfoByGuidPath())
+        URI uri = UriComponentsBuilder.fromHttpUrl(applicationProperties.getClientProfileService().getHost())
+                .path(applicationProperties.getClientProfileService().getClientInfoByGuidPath())
                 .queryParam("clientGUID", guid)
                 .build()
                 .toUri();
 
         ResponseEntity<ClientGeneralInfo> response =
-                restTemplate.getForEntity(uri.toString(), ClientGeneralInfo.class);
+                restTemplate.getForEntity(uri, ClientGeneralInfo.class);
 
-        ClientGeneralInfo clientInfo;
+        ClientGeneralInfo clientInfo = response.getBody();
 
-        if ((response.getStatusCode() != HttpStatus.OK) || (clientInfo = response.getBody()) == null) {
-            throw new ClientException(ErrorCode.PROFILE_NOT_FOUND, "Не найден профиль клиента", guid);
+        if ((response.getStatusCode() != HttpStatus.OK) || (clientInfo) == null) {
+            throw new ClientException(ErrorCode.PROFILE_NOT_FOUND, guid);
         }
 
         if ((clientInfo.getAccountList() == null) || (clientInfo.getAccountList().size() == 0)) {
-            throw new ClientException(ErrorCode.ACCOUNT_NOT_FOUND, "Не найден ни один счёт клиента", guid);
+            throw new ClientException(ErrorCode.ACCOUNT_NOT_FOUND, guid);
         }
 
         return clientInfo;
