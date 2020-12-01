@@ -64,3 +64,87 @@ databaseChangeLog:
               - column:
                   name: role
                   value: "ADMIN"
+  - changeSet:
+      id: 2
+      author: ulxanxv
+      changes:
+        - createTable:
+            tableName: transfer
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: operation_code
+                  type: varchar(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: transaction_id
+                  type: varchar(36)
+              - column:
+                  name: amount
+                  type: money
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency
+                  type: varchar(3)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(1024)
+              - column:
+                  name: message_to_payee
+                  type: varchar(1024)
+              - column:
+                  name: status
+                  type: varchar(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: creation_date
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_update_date
+                  type: timestamp
+              - column:
+                  name: payer_account
+                  type: varchar(22)
+              - column:
+                  name: payer_last_name
+                  type: varchar(128)
+              - column:
+                  name: payer_first_name
+                  type: varchar(128)
+              - column:
+                  name: payer_sub_name
+                  type: varchar(128)
+              - column:
+                  name: payer_phone
+                  type: varchar(11)
+              - column:
+                  name: payee_bank
+                  type: varchar(160)
+              - column:
+                  name: payee_account
+                  type: varchar(22)
+              - column:
+                  name: payee_last_name
+                  type: varchar(128)
+              - column:
+                  name: payee_first_name
+                  type: varchar(128)
+              - column:
+                  name: payee_sub_name
+                  type: varchar(128)
+              - column:
+                  name: payee_phone
+                  type: varchar(11)
