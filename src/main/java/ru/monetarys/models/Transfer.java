@@ -1,77 +1,89 @@
 package ru.monetarys.models;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "transfer")
-public class Transfer {
+public class Transfer implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 32, nullable = false)
+    @Length(max = 32)
+    @NotNull
     private String operationCode;
 
-    @Column(length = 36)
-    private String transactionId;
-
-    @Column(nullable = false)
+    @NotNull
     private BigDecimal amount;
 
-    @Column(length = 3, nullable = false)
+    @Length(max = 3)
+    @NotNull
     private String currency;
 
-    @Column(length = 1024)
+    @Length(max = 36)
+    private String transactionId;
+
+    @Length(max = 1024)
     private String description;
 
-    @Column(length = 1024)
+    @Length(max = 1024)
     private String messageToPayee;
 
-    @Column(length = 30, nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private TransferStatus status;
 
-    @Column(length = 22)
+    @Length(max = 22)
     private String payerAccount;
 
-    @Column(length = 128)
+    @Length(max = 128)
     private String payerLastName;
 
-    @Column(length = 128)
+    @Length(max = 128)
     private String payerFirstName;
 
-    @Column(length = 128)
+    @Length(max = 128)
     private String payerSubName;
 
-    @Column(length = 11)
+    @Length(max = 11)
     private String payerPhone;
 
-    @Column(length = 160)
+    @Length(max = 160)
     private String payeeBank;
 
-    @Column(length = 22)
+    @Length(max = 22)
     private String payeeAccount;
 
-    @Column(length = 128)
+    @Length(max = 128)
     private String payeeLastName;
 
-    @Column(length = 128)
+    @Length(max = 128)
     private String payeeFirstName;
 
-    @Column(length = 128)
+    @Length(max = 128)
     private String payeeSubName;
 
-    @Column(length = 11)
+    @Length(max = 11)
     private String payeePhone;
 
-    @Column(nullable = false)
-    private Date creationDate;
+    @CreatedDate
+    @NotNull
+    private LocalDateTime creationDate;
 
-    private Date lastUpdateDate;
+    @LastModifiedDate
+    private LocalDateTime lastUpdateDate;
 
 }
