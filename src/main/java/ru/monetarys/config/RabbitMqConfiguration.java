@@ -1,5 +1,7 @@
 package ru.monetarys.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
@@ -33,13 +35,14 @@ public class RabbitMqConfiguration {
     }
 
     @Bean
-    public Binding declareBindingOut(Queue queue) {
-        return BindingBuilder.bind(queue).to(outExchange()).with(ROUTING_KEY);
+    public Binding declareBindingOut(Queue queue, @Qualifier("outExchange") TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY);
     }
 
     @Bean
     public MessageConverter messageConverter() {
-        return new Jackson2JsonMessageConverter();
+        ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
+        return new Jackson2JsonMessageConverter(mapper);
     }
 
     @Bean
