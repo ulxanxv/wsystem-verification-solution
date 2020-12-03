@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 public class ApplicationProperties {
 
     private ClientProfileService clientProfileService;
+    private ClientProfileProperties clientProfileProperties;
 
     @Data
     public static class ClientProfileService {
@@ -23,9 +24,11 @@ public class ApplicationProperties {
         private String profileNotFoundMessage;
         private String accountNotFoundMessage;
 
-        /*
-        *   Service properties
-        */
+    }
+
+    @Data
+    public static class ClientProfileProperties {
+
         private int connectionTimeout;
         private int readTimeout;
         private int maxConnectionTotal;
