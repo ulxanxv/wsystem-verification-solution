@@ -4,6 +4,7 @@ spring:
     url: "jdbc:postgresql://localhost:5432/monetarysdb"
     username: "postgres"
     password: "1234"
+    driver-class-name: org.postgresql.Driver
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
@@ -33,3 +34,8 @@ application:
     read-timeout: 30000
     max-connection-total: 1000
     max-connection-per-route: 10
+  client-profile-mq-properties:
+    in-exchange-name: bank_transfers.in
+    out-exchange-name: bank_transfers.out
+    queue-name: bank_transfers.out.monetary
+    routing-key: monetarys.rk

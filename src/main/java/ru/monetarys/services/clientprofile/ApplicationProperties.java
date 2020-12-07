@@ -12,6 +12,7 @@ public class ApplicationProperties {
 
     private ClientProfileService clientProfileService;
     private ClientProfileProperties clientProfileProperties;
+    private ClientProfileMqProperties clientProfileMqProperties;
 
     @Data
     public static class ClientProfileService {
@@ -33,6 +34,16 @@ public class ApplicationProperties {
         private int readTimeout;
         private int maxConnectionTotal;
         private int maxConnectionPerRoute;
+
+    }
+
+    @Data
+    public static class ClientProfileMqProperties {
+
+        private String inExchangeName;
+        private String outExchangeName;
+        private String queueName;
+        private String routingKey;
 
     }
 

@@ -1,7 +1,7 @@
 package ru.monetarys.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
@@ -10,33 +10,30 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.concurrent.CountDownLatch;
+import ru.monetarys.services.clientprofile.ApplicationProperties;
 
 @Configuration
+@RequiredArgsConstructor
 public class RabbitMqConfiguration {
 
-    public static final String IN_EXCHANGE_NAME = "bank_transfers.in";
-    public static final String OUT_EXCHANGE_NAME = "bank_transfers.out";
-    public static final String QUEUE_NAME = "bank_transfers.out.monetary";
-    public static final String ROUTING_KEY = "monetarys.rk";
+    private final ApplicationProperties properties;
 
-    @Bean
-    public Queue queue() {
-        return new Queue(QUEUE_NAME, false);
+    private Queue queue() {
+        return new Queue(properties.getClientProfileMqProperties().getQueueName(), false);
+    }
+
+    private TopicExchange outExchange() {
+        return new TopicExchange(properties.getClientProfileMqProperties().getOutExchangeName());
     }
 
     @Bean
-    public TopicExchange outExchange() {
-        return new TopicExchange(OUT_EXCHANGE_NAME);
-    }
-
-    @Bean
-    public Binding declareBindingOut(Queue queue, @Qualifier("outExchange") TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY);
+    public Binding declareBindingOut() {
+        return BindingBuilder
+                .bind(queue())
+                .to(outExchange())
+                .with(properties.getClientProfileMqProperties().getRoutingKey());
     }
 
     @Bean
