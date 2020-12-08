@@ -1,0 +1,41 @@
+## PostgreSQL
+spring:
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/monetarysdbtest"
+    username: "postgres"
+    password: "1234"
+    driver-class-name: "org.postgresql.Driver"
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+
+## DDL
+jpa:
+  hibernate:
+    ddl-auto: create-drop
+
+## Server
+server:
+  port: 8088
+  error:
+    whitelabel:
+      enabled: false
+
+## ClientProfile service properties
+application:
+  client-profile-service:
+    host: http://clientprofile.internal.anybank.ru
+    secret: QWRtaW46YWRtaW4=
+    client-info-by-guid-path: /v1/clientInfoByGUID
+    profile-not-found-message: Не найден профиль клиента
+    account-not-found-message: Не найден ни один счёт клиента
+  client-profile-properties:
+    connection-timeout: 10000
+    read-timeout: 30000
+    max-connection-total: 1000
+    max-connection-per-route: 10
+  client-profile-mq-properties:
+    in-exchange-name: bank_transfers.in
+    out-exchange-name: bank_transfers.out
+    queue-name: bank_transfers.out.monetary
+    routing-key: monetarys.rk
