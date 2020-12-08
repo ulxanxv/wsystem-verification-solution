@@ -23,8 +23,8 @@ public class TransferSender {
     public void sendMessage(TransferRequest request) {
         request.getHeader().setMessageId(UUID.randomUUID().toString());
         rabbitTemplate.convertAndSend(
-                properties.getClientProfileMqProperties().getOutExchangeName(),
-                properties.getClientProfileMqProperties().getRoutingKey(),
+                properties.getMqTransferProperties().getOutExchangeName(),
+                properties.getMqTransferProperties().getRoutingKey(),
                 request
         );
     }

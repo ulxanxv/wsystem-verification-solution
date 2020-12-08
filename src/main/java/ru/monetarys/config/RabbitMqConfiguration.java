@@ -21,11 +21,11 @@ public class RabbitMqConfiguration {
     private final ApplicationProperties properties;
 
     private Queue queue() {
-        return new Queue(properties.getClientProfileMqProperties().getQueueName(), false);
+        return new Queue(properties.getMqTransferProperties().getQueueName(), false);
     }
 
     private TopicExchange outExchange() {
-        return new TopicExchange(properties.getClientProfileMqProperties().getOutExchangeName());
+        return new TopicExchange(properties.getMqTransferProperties().getOutExchangeName());
     }
 
     @Bean
@@ -33,7 +33,7 @@ public class RabbitMqConfiguration {
         return BindingBuilder
                 .bind(queue())
                 .to(outExchange())
-                .with(properties.getClientProfileMqProperties().getRoutingKey());
+                .with(properties.getMqTransferProperties().getRoutingKey());
     }
 
     @Bean
