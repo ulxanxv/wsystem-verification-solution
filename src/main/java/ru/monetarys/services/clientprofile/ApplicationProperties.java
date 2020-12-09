@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 public class ApplicationProperties {
 
     private ClientProfileService clientProfileService;
+    private ClientProfileProperties clientProfileProperties;
+    private MqTransferProperties mqTransferProperties;
 
     @Data
     public static class ClientProfileService {
@@ -23,13 +25,25 @@ public class ApplicationProperties {
         private String profileNotFoundMessage;
         private String accountNotFoundMessage;
 
-        /*
-        *   Service properties
-        */
+    }
+
+    @Data
+    public static class ClientProfileProperties {
+
         private int connectionTimeout;
         private int readTimeout;
         private int maxConnectionTotal;
         private int maxConnectionPerRoute;
+
+    }
+
+    @Data
+    public static class MqTransferProperties {
+
+        private String inExchangeName;
+        private String outExchangeName;
+        private String queueName;
+        private String routingKey;
 
     }
 
