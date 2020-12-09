@@ -1,47 +1,38 @@
-package ru.monetarys;
+package ru.monetarys.rest;
 
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
-import ru.monetarys.dto.ClientAccountInfo;
 import ru.monetarys.dto.ClientGeneralInfo;
 import ru.monetarys.exceptions.ClientException;
 import ru.monetarys.exceptions.ErrorCode;
 import ru.monetarys.services.clientprofile.ApplicationProperties;
 import ru.monetarys.services.clientprofile.ClientProfileServiceImpl;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.UUID;
-
 import static org.mockito.ArgumentMatchers.any;
+import static ru.monetarys.rest.ClientProfileServiceImplUtil.*;
 
+@ExtendWith({MockitoExtension.class, SpringExtension.class})
+class ClientProfileServiceImplTest {
 
-@Slf4j
-@SpringBootTest
-@ActiveProfiles("test")
-@ExtendWith(MockitoExtension.class)
-class RestIntegrationTests {
+    @Spy
+    @InjectMocks
+    private ClientProfileServiceImpl service;
 
-    @MockBean
+    @Mock
     private RestTemplate restTemplate;
 
-    @Autowired
-    private ApplicationProperties properties;
-
-    @MockBean
-    private ClientProfileServiceImpl service;
+    private final ApplicationProperties properties = getApplicationProperties();
 
     @BeforeEach
     public void setup() {
@@ -50,33 +41,19 @@ class RestIntegrationTests {
 
     @Test
     public void successfulClientSearchWithSomeData() {
-        String guid = UUID.randomUUID().toString();
+        Mockito.when(restTemplate.getForEntity(any(), any()))
+                .thenReturn(ResponseEntity.ok(getClientGeneralInfoWithAccountList()));
 
-        ClientGeneralInfo client = new ClientGeneralInfo();
-        client.setAccountList(Arrays.asList(new ClientAccountInfo(), new ClientAccountInfo()));
-        client.setGuid(guid);
-
-        Mockito
-                .when(restTemplate.getForEntity(
-                        any(),
-                        any()
-                ))
-                .thenReturn(ResponseEntity.ok(client));
-
-        ClientGeneralInfo test = service.getClientInfoByGUID(guid);
+        ClientGeneralInfo test = service.getClientInfoByGUID(GUID);
 
         Assertions.assertNotNull(test);
         Assertions.assertNotNull(test.getAccountList());
-        Assertions.assertEquals(guid, test.getGuid());
+        Assertions.assertEquals(GUID, test.getGuid());
     }
 
     @Test
     public void notFoundClient() {
-        Mockito
-                .when(restTemplate.getForEntity(
-                        any(),
-                        any()
-                ))
+        Mockito.when(restTemplate.getForEntity(any(), any()))
                 .thenReturn(ResponseEntity.ok(null));
 
         ClientException clientException = Assertions.assertThrows(
@@ -89,14 +66,8 @@ class RestIntegrationTests {
 
     @Test
     public void badRequestStatusCode() {
-        ClientGeneralInfo client = new ClientGeneralInfo();
-
-        Mockito
-                .when(restTemplate.getForEntity(
-                        any(),
-                        any()
-                ))
-                .thenReturn(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(client));
+        Mockito.when(restTemplate.getForEntity(any(), any()))
+                .thenReturn(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getEmptyClientGeneralInfo()));
 
         ClientException clientException = Assertions.assertThrows(
                 ClientException.class,
@@ -108,14 +79,8 @@ class RestIntegrationTests {
 
     @Test
     public void nullAccountList() {
-        ClientGeneralInfo client = new ClientGeneralInfo();
-
-        Mockito
-                .when(restTemplate.getForEntity(
-                        any(),
-                        any()
-                ))
-                .thenReturn(ResponseEntity.ok(client));
+        Mockito.when(restTemplate.getForEntity(any(), any()))
+                .thenReturn(ResponseEntity.ok(getEmptyClientGeneralInfo()));
 
         ClientException clientException = Assertions.assertThrows(
                 ClientException.class,
@@ -127,15 +92,8 @@ class RestIntegrationTests {
 
     @Test
     public void emptyAccountList() {
-        ClientGeneralInfo client = new ClientGeneralInfo();
-        client.setAccountList(Collections.emptyList());
-
-        Mockito
-                .when(restTemplate.getForEntity(
-                        any(),
-                        any()
-                ))
-                .thenReturn(ResponseEntity.ok(client));
+        Mockito.when(restTemplate.getForEntity(any(), any()))
+                .thenReturn(ResponseEntity.ok(getClientGeneralInfoWithEmptyAccountList()));
 
         ClientException clientException = Assertions.assertThrows(
                 ClientException.class,
