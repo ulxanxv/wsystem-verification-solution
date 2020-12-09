@@ -12,7 +12,7 @@ public class ApplicationProperties {
 
     private ClientProfileService clientProfileService;
     private ClientProfileProperties clientProfileProperties;
-    private ClientProfileMqProperties clientProfileMqProperties;
+    private MqTransferProperties mqTransferProperties;
 
     @Data
     public static class ClientProfileService {
@@ -38,7 +38,7 @@ public class ApplicationProperties {
     }
 
     @Data
-    public static class ClientProfileMqProperties {
+    public static class MqTransferProperties {
 
         private String inExchangeName;
         private String outExchangeName;

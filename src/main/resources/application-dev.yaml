@@ -34,7 +34,7 @@ application:
     read-timeout: 30000
     max-connection-total: 1000
     max-connection-per-route: 10
-  client-profile-mq-properties:
+  mq-transfer-properties:
     in-exchange-name: bank_transfers.in
     out-exchange-name: bank_transfers.out
     queue-name: bank_transfers.out.monetary
