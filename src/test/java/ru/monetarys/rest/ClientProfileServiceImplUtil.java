@@ -2,7 +2,9 @@ package ru.monetarys.rest;
 
 import lombok.experimental.UtilityClass;
 import ru.monetarys.dto.ClientAccountInfo;
+import ru.monetarys.dto.ClientContactsInfo;
 import ru.monetarys.dto.ClientGeneralInfo;
+import ru.monetarys.dto.ClientPersonalInfo;
 import ru.monetarys.services.clientprofile.ApplicationProperties;
 
 import java.util.Arrays;
@@ -12,6 +14,11 @@ import java.util.Collections;
 public class ClientProfileServiceImplUtil {
 
     public String GUID = "4886d861-9b92-4028-82c0-56adcf098a52";
+    public String PHONE_NUMBER = "+79991442211";
+    public String FIRST_NAME = "Ivanov";
+    public String LAST_NAME = "Ivan";
+    public String MIDDLE_NAME = "Ivanovich";
+    public String COUNTRY_CODE = "+7";
 
     public ApplicationProperties getApplicationProperties() {
         ApplicationProperties properties = new ApplicationProperties();
@@ -51,6 +58,19 @@ public class ClientProfileServiceImplUtil {
         ClientGeneralInfo client = new ClientGeneralInfo();
         client.setAccountList(Arrays.asList(new ClientAccountInfo(), new ClientAccountInfo()));
         client.setGuid(GUID);
+
+        ClientContactsInfo contactsInfo = new ClientContactsInfo();
+        ClientPersonalInfo personalInfo = new ClientPersonalInfo();
+
+        contactsInfo.setPhoneNumber(PHONE_NUMBER);
+        personalInfo.setFirstName(FIRST_NAME);
+        personalInfo.setLastName(LAST_NAME);
+        personalInfo.setMiddleName(MIDDLE_NAME);
+        personalInfo.setCitizenshipCountryCode(COUNTRY_CODE);
+
+        client.setContacts(contactsInfo);
+        client.setPersonalInfo(personalInfo);
+
         return client;
     }
 

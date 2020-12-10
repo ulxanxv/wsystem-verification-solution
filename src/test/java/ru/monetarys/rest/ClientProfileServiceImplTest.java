@@ -8,7 +8,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
+import org.mockito.junit.MockitoRule;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -46,9 +48,15 @@ class ClientProfileServiceImplTest {
 
         ClientGeneralInfo test = service.getClientInfoByGUID(GUID);
 
+        Mockito.verify(restTemplate, Mockito.times(1)).getForEntity(any(), any());
+
         Assertions.assertNotNull(test);
         Assertions.assertNotNull(test.getAccountList());
         Assertions.assertEquals(GUID, test.getGuid());
+        Assertions.assertEquals(FIRST_NAME, test.getPersonalInfo().getFirstName());
+        Assertions.assertEquals(LAST_NAME, test.getPersonalInfo().getLastName());
+        Assertions.assertNotNull(test.getContacts().getPhoneNumber());
+        Assertions.assertNotNull(test.getPersonalInfo());
     }
 
     @Test
@@ -56,10 +64,13 @@ class ClientProfileServiceImplTest {
         Mockito.when(restTemplate.getForEntity(any(), any()))
                 .thenReturn(ResponseEntity.ok(null));
 
+
         ClientException clientException = Assertions.assertThrows(
                 ClientException.class,
-                () -> service.getClientInfoByGUID("123")
+                () -> service.getClientInfoByGUID(GUID)
         );
+
+        Mockito.verify(restTemplate, Mockito.times(1)).getForEntity(any(), any());
 
         Assertions.assertEquals(ErrorCode.PROFILE_NOT_FOUND, clientException.getErrorCode());
     }
@@ -71,8 +82,10 @@ class ClientProfileServiceImplTest {
 
         ClientException clientException = Assertions.assertThrows(
                 ClientException.class,
-                () -> service.getClientInfoByGUID("123")
+                () -> service.getClientInfoByGUID(GUID)
         );
+
+        Mockito.verify(restTemplate, Mockito.times(1)).getForEntity(any(), any());
 
         Assertions.assertEquals(ErrorCode.PROFILE_NOT_FOUND, clientException.getErrorCode());
     }
@@ -82,10 +95,13 @@ class ClientProfileServiceImplTest {
         Mockito.when(restTemplate.getForEntity(any(), any()))
                 .thenReturn(ResponseEntity.ok(getEmptyClientGeneralInfo()));
 
+
         ClientException clientException = Assertions.assertThrows(
                 ClientException.class,
-                () -> service.getClientInfoByGUID("123")
+                () -> service.getClientInfoByGUID(GUID)
         );
+
+        Mockito.verify(restTemplate, Mockito.times(1)).getForEntity(any(), any());
 
         Assertions.assertEquals(ErrorCode.ACCOUNT_NOT_FOUND, clientException.getErrorCode());
     }
@@ -95,10 +111,13 @@ class ClientProfileServiceImplTest {
         Mockito.when(restTemplate.getForEntity(any(), any()))
                 .thenReturn(ResponseEntity.ok(getClientGeneralInfoWithEmptyAccountList()));
 
+
         ClientException clientException = Assertions.assertThrows(
                 ClientException.class,
-                () -> service.getClientInfoByGUID("123")
+                () -> service.getClientInfoByGUID(GUID)
         );
+
+        Mockito.verify(restTemplate, Mockito.times(1)).getForEntity(any(), any());
 
         Assertions.assertEquals(ErrorCode.ACCOUNT_NOT_FOUND, clientException.getErrorCode());
     }

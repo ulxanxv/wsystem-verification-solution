@@ -11,7 +11,6 @@ import ru.monetarys.services.clientprofile.ApplicationProperties;
 
 import java.util.UUID;
 
-@Data
 @Slf4j
 @Service
 @RequiredArgsConstructor

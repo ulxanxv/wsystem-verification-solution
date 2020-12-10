@@ -14,7 +14,6 @@ import ru.monetarys.exceptions.ErrorCode;
 
 import java.net.URI;
 
-@Data
 @Service
 @RequiredArgsConstructor
 public class ClientProfileServiceImpl implements ClientProfileService {
