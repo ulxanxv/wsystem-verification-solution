@@ -1,5 +1,6 @@
 package ru.monetarys.messages;
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
@@ -8,6 +9,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import ru.monetarys.messages.entities.TransferRequest;
 
+@Data
 @Slf4j
 @Service
 @RequiredArgsConstructor
