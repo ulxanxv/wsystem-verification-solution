@@ -4,13 +4,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.Spy;
-import org.mockito.junit.MockitoRule;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -21,7 +16,9 @@ import ru.monetarys.exceptions.ErrorCode;
 import ru.monetarys.services.clientprofile.ApplicationProperties;
 import ru.monetarys.services.clientprofile.ClientProfileServiceImpl;
 
-import static org.mockito.ArgumentMatchers.any;
+import java.net.URI;
+
+import static org.mockito.Mockito.*;
 import static ru.monetarys.rest.ClientProfileServiceImplUtil.*;
 
 @ExtendWith({MockitoExtension.class, SpringExtension.class})
@@ -48,7 +45,8 @@ class ClientProfileServiceImplTest {
 
         ClientGeneralInfo test = service.getClientInfoByGUID(GUID);
 
-        Mockito.verify(restTemplate, Mockito.times(1)).getForEntity(any(), any());
+        Mockito.verify(restTemplate, Mockito.times(1)).getForEntity(eq(URI.create(URL)), eq(ClientGeneralInfo.class));
+
 
         Assertions.assertNotNull(test);
         Assertions.assertNotNull(test.getAccountList());

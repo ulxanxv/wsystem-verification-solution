@@ -20,6 +20,8 @@ public class ClientProfileServiceImplUtil {
     public String MIDDLE_NAME = "Ivanovich";
     public String COUNTRY_CODE = "+7";
 
+    public String URL = "http://clientprofile.internal.anybank.ru/v1/clientInfoByGUID?clientGUID=" + GUID;
+
     public ApplicationProperties getApplicationProperties() {
         ApplicationProperties properties = new ApplicationProperties();
 

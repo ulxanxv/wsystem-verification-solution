@@ -2,7 +2,6 @@ package ru.monetarys.rabbit;
 
 import lombok.experimental.UtilityClass;
 import ru.monetarys.messages.entities.*;
-import ru.monetarys.models.TransferStatus;
 
 import java.time.LocalDateTime;
 
@@ -16,6 +15,9 @@ public class TransferSenderUtil {
     public String FIRST_NAME = "Ivanov";
     public String LAST_NAME = "Ivan";
     public String ACCOUNT_NUMBER = "1FA-AA";
+
+    public String IN_EXCHANGE = "bank_transfers.in";
+    public String ROUTING_KEY = "monetarys.rk";
 
     public TransferRequest getTransferRequestWithData() {
         TransferRequest transferRequest = new TransferRequest();
