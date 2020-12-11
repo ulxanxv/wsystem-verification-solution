@@ -14,7 +14,7 @@ import ru.monetarys.services.clientprofile.ApplicationProperties;
 
 import static org.mockito.Mockito.*;
 import static ru.monetarys.rabbit.TransferSenderUtil.*;
-import static ru.monetarys.rest.ClientProfileServiceImplUtil.getApplicationProperties;
+import static ru.monetarys.rest.ClientProfileServiceImplUtil.*;
 
 @ExtendWith({SpringExtension.class})
 public class TransferSenderTest {
