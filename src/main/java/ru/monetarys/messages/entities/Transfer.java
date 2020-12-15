@@ -3,7 +3,7 @@ package ru.monetarys.messages.entities;
 import lombok.Data;
 
 @Data
-public class TransferRequest {
+public class Transfer {
 
     private Header header;
     private Sender sender;

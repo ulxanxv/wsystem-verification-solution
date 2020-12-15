@@ -5,11 +5,11 @@ import lombok.Data;
 @Data
 public class ClientException extends RuntimeException {
 
-    private ErrorCode errorCode;
+    private ClientErrorCode clientErrorCode;
     private String guid;
 
-    public ClientException(ErrorCode errorCode, String guid) {
-        this.setErrorCode(errorCode);
+    public ClientException(ClientErrorCode clientErrorCode, String guid) {
+        this.setClientErrorCode(clientErrorCode);
         this.setGuid(guid);
     }
 

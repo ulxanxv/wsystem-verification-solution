@@ -13,6 +13,7 @@ public class ApplicationProperties {
     private ClientProfileService clientProfileService;
     private ClientProfileProperties clientProfileProperties;
     private MqTransferProperties mqTransferProperties;
+    private TransferMoney transferMoney;
 
     @Data
     public static class ClientProfileService {
@@ -45,6 +46,31 @@ public class ApplicationProperties {
         private String queueName;
         private String routingKey;
 
+    }
+
+    @Data
+    public static class TransferMoney {
+
+        private String payerAccountNotValid;
+        private String payeeGuidNotValid;
+        private String payeeAccIdNotValid;
+        private String payeeAccountNotValid;
+        private String payeeAccountNotAllowed;
+        private String payeeCardNumberNotValid;
+        private String payeePhoneNotValid;
+        private String amountNotValid;
+        private String messageToPayeeNotValid;
+
+        private String[] availableAccountCurrencies;
+        private String[] availablePayerAccountStatuses;
+        private String[] availablePayerAccountTypes;
+        private String[] availablePayeeAccountStatuses;
+        private String[] availablePayeeAccountTypes;
+        private String availableCitizenshipCountryCode;
+        private String operationCode;
+        private String operationCurrency;
+        private String transferDescription;
+        private String phoneNumberRegex;
     }
 
 }

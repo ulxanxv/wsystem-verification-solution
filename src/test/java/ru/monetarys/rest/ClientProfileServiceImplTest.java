@@ -12,7 +12,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 import ru.monetarys.dto.ClientGeneralInfo;
 import ru.monetarys.exceptions.ClientException;
-import ru.monetarys.exceptions.ErrorCode;
+import ru.monetarys.exceptions.ClientErrorCode;
 import ru.monetarys.services.clientprofile.ApplicationProperties;
 import ru.monetarys.services.clientprofile.ClientProfileServiceImpl;
 
@@ -70,7 +70,7 @@ class ClientProfileServiceImplTest {
 
         Mockito.verify(restTemplate, Mockito.times(1)).getForEntity(any(), any());
 
-        Assertions.assertEquals(ErrorCode.PROFILE_NOT_FOUND, clientException.getErrorCode());
+        Assertions.assertEquals(ClientErrorCode.PROFILE_NOT_FOUND, clientException.getClientErrorCode());
     }
 
     @Test
@@ -85,7 +85,7 @@ class ClientProfileServiceImplTest {
 
         Mockito.verify(restTemplate, Mockito.times(1)).getForEntity(any(), any());
 
-        Assertions.assertEquals(ErrorCode.PROFILE_NOT_FOUND, clientException.getErrorCode());
+        Assertions.assertEquals(ClientErrorCode.PROFILE_NOT_FOUND, clientException.getClientErrorCode());
     }
 
     @Test
@@ -101,7 +101,7 @@ class ClientProfileServiceImplTest {
 
         Mockito.verify(restTemplate, Mockito.times(1)).getForEntity(any(), any());
 
-        Assertions.assertEquals(ErrorCode.ACCOUNT_NOT_FOUND, clientException.getErrorCode());
+        Assertions.assertEquals(ClientErrorCode.ACCOUNT_NOT_FOUND, clientException.getClientErrorCode());
     }
 
     @Test
@@ -117,7 +117,7 @@ class ClientProfileServiceImplTest {
 
         Mockito.verify(restTemplate, Mockito.times(1)).getForEntity(any(), any());
 
-        Assertions.assertEquals(ErrorCode.ACCOUNT_NOT_FOUND, clientException.getErrorCode());
+        Assertions.assertEquals(ClientErrorCode.ACCOUNT_NOT_FOUND, clientException.getClientErrorCode());
     }
 
 }

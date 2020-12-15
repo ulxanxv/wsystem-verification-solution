@@ -1,6 +1,9 @@
 package ru.monetarys.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -13,8 +16,11 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@EntityListeners(AuditingEntityListener.class)
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "transfer")
+@EntityListeners(AuditingEntityListener.class)
 public class Transfer {
 
     @Id

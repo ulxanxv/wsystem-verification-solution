@@ -23,19 +23,41 @@ server:
 
 ## ClientProfile service properties
 application:
-  client-profile-service:
+  clientProfileService:
     host: http://clientprofile.internal.anybank.ru
     secret: QWRtaW46YWRtaW4=
-    client-info-by-guid-path: /v1/clientInfoByGUID
-    profile-not-found-message: Не найден профиль клиента
-    account-not-found-message: Не найден ни один счёт клиента
-  client-profile-properties:
-    connection-timeout: 10000
-    read-timeout: 30000
-    max-connection-total: 1000
-    max-connection-per-route: 10
-  mq-transfer-properties:
-    in-exchange-name: bank_transfers.in
-    out-exchange-name: bank_transfers.out
-    queue-name: bank_transfers.out.monetary
-    routing-key: monetarys.rk
+    clientInfoByGuidPath: /v1/clientInfoByGUID
+    profileNotFoundMessage: 'Не найден профиль клиента'
+    accountNotFoundMessage: 'Не найден ни один счёт клиента'
+  clientProfileProperties:
+    connectionTimeout: 10000
+    readTimeout: 30000
+    maxConnectionTotal: 1000
+    maxConnectionPerRoute: 10
+  mqTransferProperties:
+    inExchangeName: bank_transfers.in
+    outExchangeName: bank_transfers.out
+    queueName: bank_transfers.out.monetary
+    routingKey: monetarys.rk
+  transferMoney:
+    payerAccountNotValid: 'Некорректный счёт плательщика'
+    payeeGuidNotValid: 'Некорректный идентификатор получателя'
+    payeeAccIdNotValid: 'Некорректный идентификатор счёта получателя'
+    payeeAccountNotValid: 'Некорректный счёт получателя'
+    payeeAccountNotAllowed: 'Невозможно перевести на указанный счёт'
+    payeeCardNumberNotValid: 'Некорректный номер карты получателя'
+    payeePhoneNotValid: 'Некорректный номер телефона получателя'
+    amountNotValid: 'Недопустимая сумма'
+    messageToPayeeNotValid: 'Превышена допустимая длина сообщения получателю'
+## AVAILABLE DATA
+    availableAccountCurrencies: RUB
+    availablePayerAccountStatuses: 'work'
+    availablePayerAccountTypes: Текущий, Накопительный
+    availablePayeeAccountStatuses: 'work'
+    availablePayeeAccountTypes: Текущий, Накопительный
+    availableCitizenshipCountryCode: 643
+    operationCode: 5
+    operationCurrency: RUB
+    transferDescription: 'В пользу другого клиента'
+    phoneNumberRegex: '^[0-9]{10}$'
+

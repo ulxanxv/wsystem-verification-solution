@@ -1,6 +1,5 @@
 package ru.monetarys.services.clientprofile;
 
-import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.monetarys.dto.ClientGeneralInfo;
 import ru.monetarys.exceptions.ClientException;
-import ru.monetarys.exceptions.ErrorCode;
+import ru.monetarys.exceptions.ClientErrorCode;
 
 import java.net.URI;
 
@@ -34,11 +33,11 @@ public class ClientProfileServiceImpl implements ClientProfileService {
         ClientGeneralInfo clientInfo = response.getBody();
 
         if ((response.getStatusCode() != HttpStatus.OK) || (clientInfo) == null) {
-            throw new ClientException(ErrorCode.PROFILE_NOT_FOUND, guid);
+            throw new ClientException(ClientErrorCode.PROFILE_NOT_FOUND, guid);
         }
 
         if ((clientInfo.getAccountList() == null) || (clientInfo.getAccountList().size() == 0)) {
-            throw new ClientException(ErrorCode.ACCOUNT_NOT_FOUND, guid);
+            throw new ClientException(ClientErrorCode.ACCOUNT_NOT_FOUND, guid);
         }
 
         return clientInfo;

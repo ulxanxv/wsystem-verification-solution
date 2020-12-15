@@ -10,7 +10,7 @@ import org.mockito.Spy;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.monetarys.messages.TransferSender;
-import ru.monetarys.messages.entities.TransferRequest;
+import ru.monetarys.messages.entities.Transfer;
 import ru.monetarys.services.clientprofile.ApplicationProperties;
 
 import static org.mockito.Mockito.*;
@@ -37,7 +37,7 @@ public class TransferSenderTest {
     @Test
     public void testSend() {
         transferSender.sendMessage(getTransferRequestWithData());
-        Mockito.verify(rabbitTemplate, times(1)).convertAndSend(eq(IN_EXCHANGE), eq(ROUTING_KEY), any(TransferRequest.class));
+        Mockito.verify(rabbitTemplate, times(1)).convertAndSend(eq(IN_EXCHANGE), eq(ROUTING_KEY), any(Transfer.class));
     }
 
 }
