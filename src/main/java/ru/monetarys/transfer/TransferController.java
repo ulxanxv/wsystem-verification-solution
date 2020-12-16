@@ -17,7 +17,7 @@ public class TransferController {
     @PostMapping("v1/execute")
     public ResponseEntity<?> execute(@RequestBody TransferRequest request) {
         Transfer transfer = transferComponent.transferMoney(request);
-        return ResponseEntity.ok(TransferUtils.getTransferResponse(transfer));
+        return ResponseEntity.ok(TransferUtil.getTransferResponse(transfer));
     }
 
 }

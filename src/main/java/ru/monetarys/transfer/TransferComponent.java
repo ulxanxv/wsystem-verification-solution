@@ -37,7 +37,7 @@ public class TransferComponent {
     }
 
     public Transfer saveTransfer(TransferRequest transferRequest, ClientGeneralInfo payer, ClientGeneralInfo payee, ClientAccountInfo payeeAccount) {
-        return transferRepository.save(TransferUtils.getTransfer(applicationProperties, transferRequest, payer, payee, payeeAccount));
+        return transferRepository.save(TransferUtil.getTransfer(applicationProperties, transferRequest, payer, payee, payeeAccount));
     }
 
     private Transfer validateDataAndSave(TransferRequest transferRequest) {
@@ -58,15 +58,15 @@ public class TransferComponent {
         TransferValidateHelper.newInstance()
                 .validate(
                         applicationProperties.getTransferMoney().getAvailablePayerAccountStatuses(),
-                        x -> Arrays.stream(x).noneMatch(y -> y.equals(payerAccount.getAccountStatus())),
+                        x -> Arrays.asList(x).contains(payerAccount.getAccountStatus()),
                         TransferErrorCode.INCORRECT_PAYER_ACCOUNT_STATUS)
                 .validate(
                         applicationProperties.getTransferMoney().getAvailablePayerAccountTypes(),
-                        x -> Arrays.stream(x).noneMatch(y -> y.equals(payerAccount.getAccountType())),
+                        x -> Arrays.asList(x).contains(payerAccount.getAccountType()),
                         TransferErrorCode.INCORRECT_PAYER_ACCOUNT_TYPE)
                 .validate(
                         applicationProperties.getTransferMoney().getAvailableAccountCurrencies(),
-                        x -> Arrays.stream(x).noneMatch(y -> y.equals(payerAccount.getCurrency())),
+                        x -> Arrays.asList(x).contains(payerAccount.getCurrency()),
                         TransferErrorCode.INCORRECT_PAYER_ACCOUNT_CURRENCY)
                 .validate(
                         payerAccount.getBalance(),
@@ -79,15 +79,15 @@ public class TransferComponent {
         TransferValidateHelper.newInstance()
                 .validate(
                         applicationProperties.getTransferMoney().getAvailablePayeeAccountStatuses(),
-                        x -> Arrays.stream(x).noneMatch(y -> y.equals(payeeAccount.getAccountStatus())),
+                        x -> Arrays.asList(x).contains(payeeAccount.getAccountStatus()),
                         TransferErrorCode.INCORRECT_PAYEE_ACCOUNT_STATUS)
                 .validate(
                         applicationProperties.getTransferMoney().getAvailablePayeeAccountTypes(),
-                        x -> Arrays.stream(x).noneMatch(y -> y.equals(payeeAccount.getAccountType())),
+                        x -> Arrays.asList(x).contains(payeeAccount.getAccountType()),
                         TransferErrorCode.INCORRECT_PAYEE_ACCOUNT_TYPE)
                 .validate(
                         applicationProperties.getTransferMoney().getAvailableAccountCurrencies(),
-                        x -> Arrays.stream(x).noneMatch(y -> y.equals(payeeAccount.getCurrency())),
+                        x -> Arrays.asList(x).contains(payeeAccount.getCurrency()),
                         TransferErrorCode.INCORRECT_PAYEE_ACCOUNT_CURRENCY)
                 .validate(
                         applicationProperties.getTransferMoney().getAvailableCitizenshipCountryCode(),

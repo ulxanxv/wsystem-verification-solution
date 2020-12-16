@@ -11,7 +11,7 @@ import ru.monetarys.transfer.entities.*;
 import java.util.UUID;
 
 @UtilityClass
-public class TransferUtils {
+public class TransferUtil {
 
     public Transfer getTransfer(ApplicationProperties applicationProperties, TransferRequest transferRequest, ClientGeneralInfo payer, ClientGeneralInfo payee, ClientAccountInfo payeeAccount) {
         return Transfer.builder()

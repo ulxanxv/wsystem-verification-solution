@@ -59,5 +59,4 @@ application:
     operationCode: 5
     operationCurrency: RUB
     transferDescription: 'В пользу другого клиента'
-    phoneNumberRegex: '^[0-9]{10}$'
 
