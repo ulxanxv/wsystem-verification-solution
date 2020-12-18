@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import ru.monetarys.messages.entities.Transfer;
-import ru.monetarys.services.clientprofile.ApplicationProperties;
+import ru.monetarys.integration.ApplicationProperties;
 
 import java.util.UUID;
 

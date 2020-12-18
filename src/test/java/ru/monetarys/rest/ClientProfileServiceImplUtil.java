@@ -1,11 +1,11 @@
 package ru.monetarys.rest;
 
 import lombok.experimental.UtilityClass;
-import ru.monetarys.dto.ClientAccountInfo;
-import ru.monetarys.dto.ClientContactsInfo;
-import ru.monetarys.dto.ClientGeneralInfo;
-import ru.monetarys.dto.ClientPersonalInfo;
-import ru.monetarys.services.clientprofile.ApplicationProperties;
+import ru.monetarys.integration.ApplicationProperties;
+import ru.monetarys.integration.domain.ClientAccountInfo;
+import ru.monetarys.integration.domain.ClientContactsInfo;
+import ru.monetarys.integration.domain.ClientGeneralInfo;
+import ru.monetarys.integration.domain.ClientPersonalInfo;
 
 import java.util.Arrays;
 import java.util.Collections;

@@ -10,11 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
-import ru.monetarys.dto.ClientGeneralInfo;
+import ru.monetarys.integration.domain.ClientGeneralInfo;
+import ru.monetarys.integration.rs.ClientGeneralInfoRs;
 import ru.monetarys.exceptions.ClientException;
 import ru.monetarys.exceptions.ClientErrorCode;
-import ru.monetarys.services.clientprofile.ApplicationProperties;
-import ru.monetarys.services.clientprofile.ClientProfileServiceImpl;
+import ru.monetarys.integration.ApplicationProperties;
+import ru.monetarys.integration.service.ClientProfileServiceImpl;
 
 import java.net.URI;
 
@@ -35,7 +36,7 @@ class ClientProfileServiceImplTest {
 
     @BeforeEach
     public void setup() {
-        service = new ClientProfileServiceImpl(restTemplate, properties);
+        service = new ClientProfileServiceImpl(restTemplate, properties, null);
     }
 
     @Test
@@ -45,7 +46,7 @@ class ClientProfileServiceImplTest {
 
         ClientGeneralInfo test = service.getClientInfoByGUID(GUID);
 
-        Mockito.verify(restTemplate, Mockito.times(1)).getForEntity(eq(URI.create(URL)), eq(ClientGeneralInfo.class));
+        Mockito.verify(restTemplate, Mockito.times(1)).getForEntity(eq(URI.create(URL)), eq(ClientGeneralInfoRs.class));
 
 
         Assertions.assertNotNull(test);

@@ -11,7 +11,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.monetarys.messages.TransferSender;
 import ru.monetarys.messages.entities.Transfer;
-import ru.monetarys.services.clientprofile.ApplicationProperties;
+import ru.monetarys.integration.ApplicationProperties;
 
 import static org.mockito.Mockito.*;
 import static ru.monetarys.rabbit.TransferSenderUtil.*;
