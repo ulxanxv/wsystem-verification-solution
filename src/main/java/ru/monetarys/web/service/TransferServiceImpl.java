@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.monetarys.exceptions.TransferErrorCode;
+import ru.monetarys.logic.impl.TransferManager;
 import ru.monetarys.web.helper.TransferValidateHelper;
-import ru.monetarys.logic.manager.TransferManagerImpl;
 import ru.monetarys.web.mapper.TransferRequestRoMapper;
 import ru.monetarys.web.ro.TransferRequestRo;
 import ru.monetarys.web.ro.TransferResponseRo;
@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 public class TransferServiceImpl implements TransferService {
 
     private final TransferRequestRoMapper transferRequestRoMapper;
-    private final TransferManagerImpl transferManager;
+    private final TransferManager transferManager;
 
     @Override
     @Transactional

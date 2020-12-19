@@ -9,6 +9,8 @@ public interface TransferManager {
 
     TransferResponseRo transferMoney(TransferRequest transferRequest);
 
+    void validateData(TransferRequest transferRequest, ClientGeneralInfo payee, ClientGeneralInfo payer, ClientAccountInfo payerAccount, ClientAccountInfo payeeAccount);
+
     void validatePayer(TransferRequest transferRequest, ClientAccountInfo payerAccount);
 
     void validatePayee(ClientGeneralInfo payee, ClientGeneralInfo payer, ClientAccountInfo payeeAccount, ClientAccountInfo payerAccount);

@@ -27,8 +27,15 @@ application:
     host: http://clientprofile.internal.anybank.ru
     secret: QWRtaW46YWRtaW4=
     clientInfoByGuidPath: /v1/clientInfoByGUID
-    profileNotFoundMessage: 'Не найден профиль клиента'
-    accountNotFoundMessage: 'Не найден ни один счёт клиента'
+    errorMappings:
+      PROFILE_NOT_FOUND:
+        attributeName: clientGUID
+        code: ProfileNotFound
+        msg: 'Не найден профиль клиента'
+      ACCOUNT_NOT_FOUND:
+        attributeName: accountList
+        code: AccountNotFound
+        msg: 'Не найден ни один счёт клиента'
   clientProfileProperties:
     connectionTimeout: 10000
     readTimeout: 30000
@@ -40,15 +47,83 @@ application:
     queueName: bank_transfers.out.monetary
     routingKey: monetarys.rk
   transferMoney:
-    payerAccountNotValid: 'Некорректный счёт плательщика'
-    payeeGuidNotValid: 'Некорректный идентификатор получателя'
-    payeeAccIdNotValid: 'Некорректный идентификатор счёта получателя'
-    payeeAccountNotValid: 'Некорректный счёт получателя'
-    payeeAccountNotAllowed: 'Невозможно перевести на указанный счёт'
-    payeeCardNumberNotValid: 'Некорректный номер карты получателя'
-    payeePhoneNotValid: 'Некорректный номер телефона получателя'
-    amountNotValid: 'Недопустимая сумма'
-    messageToPayeeNotValid: 'Превышена допустимая длина сообщения получателю'
+    validationErrors:
+      PAYER_ACCOUNT_NOT_VALID:
+        attributeName: account
+        code: PayerAccountNotValid
+        msg: 'Некорректный счёт плательщика'
+      PAYEE_GUID_NOT_VALID:
+        attributeName: guid
+        code: PayeeGuidNotValid
+        msg: 'Некорректный идентификатор получателя'
+      PAYEE_ACC_ID_NOT_VALID:
+        attributeName: accountId
+        code: PayeeAccIdNotValid
+        msg: 'Некорректный идентификатор счёта получателя'
+      PAYEE_ACCOUNT_NOT_VALID:
+        attributeName: account
+        code: PayeeAccountNotValid
+        msg: 'Некорректный счёт получателя'
+      PAYEE_ACCOUNT_NOT_ALLOWED:
+        attributeName: account
+        code: PayeeAccountNotAllowed
+        msg: 'Невозможно перевести на указанный счёт'
+      PAYEE_CARD_NUMBER_NOT_VALID:
+        attributeName: cardNumber
+        code: PayeeCardNumberNotValid
+        msg: 'Некорректный номер карты получателя'
+      PAYEE_PHONE_NOT_VALID:
+        attributeName: phone
+        code: PayeePhoneNotValid
+        msg: 'Некорректный номер телефона получателя'
+      AMOUNT_NOT_VALID:
+        attributeName: amount
+        code: AmountNotValid
+        msg: 'Недопустимая сумма'
+      MESSAGE_TO_PAYEE_NOT_VALID:
+        attributeName: messageToPayee
+        code: MessageToPayeeNotValid
+        msg: 'Превышена допустимая длина сообщения получателю'
+      INCORRECT_PAYER_ACCOUNT_STATUS:
+        attributeName: accountStatus
+        code: IncorrectPayerAccountStatus
+        msg: 'Некорректный статус счёта. Перевод с указанного счёта невозможен.'
+      INCORRECT_PAYER_ACCOUNT_TYPE:
+        attributeName: accountType
+        code: IncorrectPayerAccountType
+        msg: 'Некорректный тип счёта. Перевод с указанного счёта невозможен.'
+      INCORRECT_PAYER_ACCOUNT_CURRENCY:
+        attributeName: accountCur
+        code: IncorrectPayerAccountCurrency
+        msg: 'Некорректная валюта счёта. Перевод с указанного счёта невозможен.'
+      BALANCED_EXCEED:
+        attributeName: accountBalance
+        code: BalancedExceed
+        msg: 'Недостаточно средств на счёте списания.'
+      INCORRECT_PAYEE_ACCOUNT_STATUS:
+        attributeName: accountStatus
+        code: IncorrectPayeeAccountStatus
+        msg: 'Некорректный статус счёта. Перевод на указанный счёт невозможен.'
+      INCORRECT_PAYEE_ACCOUNT_TYPE:
+        attributeName: accountType
+        code: IncorrectPayeeAccountType
+        msg: 'Некорректный тип счёта. Перевод на указанный счёт невозможен.'
+      INCORRECT_PAYEE_ACCOUNT_CURENCY:
+        attributeName: accountCur
+        code: IncorrectPayeeAccountCurrency
+        msg: 'Некорректная валюта счёта. Перевод на указанный счет невозможен.'
+      PAYEE_NON_RESIDENT:
+        attributeName: payerCitizenshipCountryCode
+        code: PayeeNonResident
+        msg: 'Получатель не является резидентом.'
+      PAYEE_NON_INDIVIDUAL:
+        attributeName: lastName/firstName
+        code: PayeeNonIndividual
+        msg: 'Получатель не является физическим лицом. Перевод на указанный счёт невозможен.'
+      CURRENCIES_NON_MATCHING:
+        attributeName: accountCur
+        code: CurrenciesNonMatching
+        msg: 'Не совпадают валюты счетов. Перевод не возможен.'
 ## AVAILABLE DATA
     availableAccountCurrencies: RUB
     availablePayerAccountStatuses: 'work'

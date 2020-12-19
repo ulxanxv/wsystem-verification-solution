@@ -36,6 +36,7 @@ class ClientProfileServiceImplTest {
 
     @BeforeEach
     public void setup() {
+        // FIXME: null should not be passed as the third parameter
         service = new ClientProfileServiceImpl(restTemplate, properties, null);
     }
 
@@ -44,7 +45,7 @@ class ClientProfileServiceImplTest {
         Mockito.when(restTemplate.getForEntity(any(), any()))
                 .thenReturn(ResponseEntity.ok(getClientGeneralInfoWithAccountList()));
 
-        ClientGeneralInfo test = service.getClientInfoByGUID(GUID);
+        ClientGeneralInfo test = service.getClientInfoByGuid(GUID);
 
         Mockito.verify(restTemplate, Mockito.times(1)).getForEntity(eq(URI.create(URL)), eq(ClientGeneralInfoRs.class));
 
@@ -66,7 +67,7 @@ class ClientProfileServiceImplTest {
 
         ClientException clientException = Assertions.assertThrows(
                 ClientException.class,
-                () -> service.getClientInfoByGUID(GUID)
+                () -> service.getClientInfoByGuid(GUID)
         );
 
         Mockito.verify(restTemplate, Mockito.times(1)).getForEntity(any(), any());
@@ -81,7 +82,7 @@ class ClientProfileServiceImplTest {
 
         ClientException clientException = Assertions.assertThrows(
                 ClientException.class,
-                () -> service.getClientInfoByGUID(GUID)
+                () -> service.getClientInfoByGuid(GUID)
         );
 
         Mockito.verify(restTemplate, Mockito.times(1)).getForEntity(any(), any());
@@ -97,7 +98,7 @@ class ClientProfileServiceImplTest {
 
         ClientException clientException = Assertions.assertThrows(
                 ClientException.class,
-                () -> service.getClientInfoByGUID(GUID)
+                () -> service.getClientInfoByGuid(GUID)
         );
 
         Mockito.verify(restTemplate, Mockito.times(1)).getForEntity(any(), any());
@@ -113,7 +114,7 @@ class ClientProfileServiceImplTest {
 
         ClientException clientException = Assertions.assertThrows(
                 ClientException.class,
-                () -> service.getClientInfoByGUID(GUID)
+                () -> service.getClientInfoByGuid(GUID)
         );
 
         Mockito.verify(restTemplate, Mockito.times(1)).getForEntity(any(), any());

@@ -1,6 +1,7 @@
 package ru.monetarys.exceptions;
 
 public enum TransferErrorCode {
+
     PAYER_ACCOUNT_NOT_VALID,
     PAYEE_GUID_NOT_VALID,
     PAYEE_ACC_ID_NOT_VALID,
@@ -19,5 +20,6 @@ public enum TransferErrorCode {
     PAYEE_NOT_RESIDENT,
     PAYEE_NON_INDIVIDUAL,
     CURRENCIES_NOT_MATCHING,
-    BALANCE_EXCEED
+    BALANCE_EXCEED;
+
 }

@@ -24,7 +24,7 @@ public class ClientProfileServiceImpl implements ClientProfileService {
     private final ApplicationProperties applicationProperties;
     private final ClientProfileRsMapper clientProfileRsMapper;
 
-    public ClientGeneralInfo getClientInfoByGUID(@NonNull String guid) {
+    public ClientGeneralInfo getClientInfoByGuid(@NonNull String guid) {
         URI uri = UriComponentsBuilder.fromHttpUrl(applicationProperties.getClientProfileService().getHost())
                 .path(applicationProperties.getClientProfileService().getClientInfoByGuidPath())
                 .queryParam("clientGUID", guid)

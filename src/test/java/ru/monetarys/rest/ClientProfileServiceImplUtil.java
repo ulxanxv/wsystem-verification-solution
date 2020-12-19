@@ -1,6 +1,7 @@
 package ru.monetarys.rest;
 
 import lombok.experimental.UtilityClass;
+import ru.monetarys.exceptions.domain.ErrorDefinition;
 import ru.monetarys.integration.ApplicationProperties;
 import ru.monetarys.integration.domain.ClientAccountInfo;
 import ru.monetarys.integration.domain.ClientContactsInfo;
@@ -9,6 +10,8 @@ import ru.monetarys.integration.domain.ClientPersonalInfo;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @UtilityClass
 public class ClientProfileServiceImplUtil {
@@ -39,11 +42,25 @@ public class ClientProfileServiceImplUtil {
         /*
          * ClientProfileService
          * */
-        properties.getClientProfileService().setAccountNotFoundMessage("Не найден ни один счёт клиента");
         properties.getClientProfileService().setClientInfoByGuidPath("/v1/clientInfoByGUID");
         properties.getClientProfileService().setHost("http://clientprofile.internal.anybank.ru");
-        properties.getClientProfileService().setProfileNotFoundMessage("Не найден профиль клиента");
         properties.getClientProfileService().setSecret("QWRtaW46YWRtaW4=");
+
+        Map<String, ErrorDefinition> errorMappings = new HashMap<>();
+
+        ErrorDefinition definition = new ErrorDefinition();
+
+        definition.setAttributeName("clientGuid");
+        definition.setCode("ProfileNotFound");
+        definition.setMsg("Не найден профиль клиента");
+        errorMappings.put("PROFILE_NOT_FOUND", definition);
+
+        definition.setAttributeName("accountList");
+        definition.setCode("AccountNotFound");
+        definition.setMsg("Не найден ни один счёт клиента");
+        errorMappings.put("ACCOUNT_NOT_FOUND", definition);
+
+        properties.getClientProfileService().setErrorMappings(errorMappings);
 
         /*
          * ClientProfileProperties

@@ -4,6 +4,9 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
+import ru.monetarys.exceptions.domain.ErrorDefinition;
+
+import java.util.Map;
 
 @Data
 @Component
@@ -18,14 +21,12 @@ public class ApplicationProperties {
     @Data
     public static class ClientProfileService {
 
-        private String httpHeader = HttpHeaders.AUTHORIZATION;
+        private Map<String, ErrorDefinition> errorMappings;
 
-        private String host;
+        private String httpHeader = HttpHeaders.AUTHORIZATION;
         private String clientInfoByGuidPath;
         private String secret;
-        private String profileNotFoundMessage;
-        private String accountNotFoundMessage;
-
+        private String host;
     }
 
     @Data
@@ -35,7 +36,6 @@ public class ApplicationProperties {
         private int readTimeout;
         private int maxConnectionTotal;
         private int maxConnectionPerRoute;
-
     }
 
     @Data
@@ -45,21 +45,12 @@ public class ApplicationProperties {
         private String outExchangeName;
         private String queueName;
         private String routingKey;
-
     }
 
     @Data
     public static class TransferMoney {
 
-        private String payerAccountNotValid;
-        private String payeeGuidNotValid;
-        private String payeeAccIdNotValid;
-        private String payeeAccountNotValid;
-        private String payeeAccountNotAllowed;
-        private String payeeCardNumberNotValid;
-        private String payeePhoneNotValid;
-        private String amountNotValid;
-        private String messageToPayeeNotValid;
+        private Map<String, ErrorDefinition> validationErrors;
 
         private String[] availableAccountCurrencies;
         private String[] availablePayerAccountStatuses;

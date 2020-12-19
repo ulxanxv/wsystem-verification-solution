@@ -30,15 +30,19 @@ public class TransferManagerImpl implements TransferManager {
 
     @Override
     public TransferResponseRo transferMoney(TransferRequest transferRequest) {
-        ClientGeneralInfo payer         = clientProfileService.getClientInfoByGUID(transferRequest.getPayer().getGuid());
-        ClientGeneralInfo payee         = clientProfileService.getClientInfoByGUID(transferRequest.getPayee().getGuid());
+        ClientGeneralInfo payer         = clientProfileService.getClientInfoByGuid(transferRequest.getPayer().getGuid());
+        ClientGeneralInfo payee         = clientProfileService.getClientInfoByGuid(transferRequest.getPayee().getGuid());
         ClientAccountInfo payerAccount  = this.getAccount(payer.getAccountList(), transferRequest.getPayer().getAccount(), transferRequest.getPayer().getGuid());
         ClientAccountInfo payeeAccount  = this.getAccount(payee.getAccountList(), transferRequest.getPayee().getAccount(), transferRequest.getPayee().getGuid());
 
-        validatePayer(transferRequest, payerAccount);
-        validatePayee(payee, payer, payeeAccount, payerAccount);
+        validateData(transferRequest, payee, payer, payerAccount, payeeAccount);
 
         return saveTransfer(transferRequest, payer, payee, payeeAccount);
+    }
+
+    public void validateData(TransferRequest transferRequest, ClientGeneralInfo payee, ClientGeneralInfo payer, ClientAccountInfo payerAccount, ClientAccountInfo payeeAccount) {
+        validatePayer(transferRequest, payerAccount);
+        validatePayee(payee, payer, payeeAccount, payerAccount);
     }
 
     public TransferResponseRo saveTransfer(TransferRequest transferRequest, ClientGeneralInfo payer, ClientGeneralInfo payee, ClientAccountInfo payeeAccount) {

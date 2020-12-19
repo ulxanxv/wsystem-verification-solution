@@ -4,6 +4,6 @@ import ru.monetarys.integration.domain.ClientGeneralInfo;
 
 public interface ClientProfileService {
 
-    ClientGeneralInfo getClientInfoByGUID(String guid);
+    ClientGeneralInfo getClientInfoByGuid(String guid);
 
 }
