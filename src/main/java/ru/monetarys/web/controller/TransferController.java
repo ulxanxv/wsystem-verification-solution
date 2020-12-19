@@ -10,13 +10,13 @@ import ru.monetarys.web.ro.TransferRequestRo;
 import ru.monetarys.web.ro.TransferResponseRo;
 import ru.monetarys.web.service.TransferServiceImpl;
 
-@RestController(value = "/")
+@RestController("/v1")
 public class TransferController {
 
     @Autowired
     private TransferServiceImpl transferServiceImpl;
 
-    @PostMapping("v1/execute")
+    @PostMapping(value = "/execute")
     public ResponseEntity<TransferResponseRo> execute(@RequestBody TransferRequestRo request) {
         return ResponseEntity.status(HttpStatus.OK).body(transferServiceImpl.transferMoney(request));
     }

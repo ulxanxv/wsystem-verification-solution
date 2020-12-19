@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.monetarys.exceptions.TransferErrorCode;
+import ru.monetarys.exceptions.TransferIntegrationValidateException;
+import ru.monetarys.exceptions.TransferValidateException;
 import ru.monetarys.logic.impl.TransferManager;
 import ru.monetarys.web.helper.TransferValidateHelper;
 import ru.monetarys.web.mapper.TransferRequestRoMapper;
@@ -64,7 +66,7 @@ public class TransferServiceImpl implements TransferService {
                         transferRequestRo.getTransaction().getMessageToPayee().length(),
                         x -> x > 1024,
                         TransferErrorCode.MESSAGE_TO_PAYEE_NOT_VALID
-                ).throwIfNotValid();
+                ).throwIfNotValid(TransferValidateException.class);
     }
 
 }

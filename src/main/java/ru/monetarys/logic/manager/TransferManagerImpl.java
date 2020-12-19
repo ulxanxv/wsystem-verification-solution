@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import ru.monetarys.exceptions.ClientErrorCode;
 import ru.monetarys.exceptions.ClientException;
 import ru.monetarys.exceptions.TransferErrorCode;
+import ru.monetarys.exceptions.TransferIntegrationValidateException;
 import ru.monetarys.integration.ApplicationProperties;
 import ru.monetarys.integration.domain.ClientAccountInfo;
 import ru.monetarys.integration.domain.ClientGeneralInfo;
@@ -69,7 +70,7 @@ public class TransferManagerImpl implements TransferManager {
                     payerAccount.getBalance(),
                     x -> x.compareTo(transferRequest.getTransaction().getAmount()) > 0,
                     TransferErrorCode.BALANCE_EXCEED
-                ).throwIfNotValid();
+                ).throwIfNotValid(TransferIntegrationValidateException.class);
     }
 
     @Override
@@ -99,7 +100,7 @@ public class TransferManagerImpl implements TransferManager {
                     payerAccount.getCurrency(),
                     x -> x.equals(payeeAccount.getCurrency()),
                     TransferErrorCode.CURRENCIES_NOT_MATCHING
-                ).throwIfNotValid();
+                ).throwIfNotValid(TransferIntegrationValidateException.class);
     }
 
     private ClientAccountInfo getAccount(List<ClientAccountInfo> accounts, String account, String guid) {
