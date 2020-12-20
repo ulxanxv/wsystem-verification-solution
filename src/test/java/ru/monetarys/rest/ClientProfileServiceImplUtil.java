@@ -3,10 +3,10 @@ package ru.monetarys.rest;
 import lombok.experimental.UtilityClass;
 import ru.monetarys.exceptions.domain.ErrorDefinition;
 import ru.monetarys.integration.ApplicationProperties;
-import ru.monetarys.integration.domain.ClientAccountInfo;
-import ru.monetarys.integration.domain.ClientContactsInfo;
-import ru.monetarys.integration.domain.ClientGeneralInfo;
-import ru.monetarys.integration.domain.ClientPersonalInfo;
+import ru.monetarys.integration.rs.ClientAccountInfoRs;
+import ru.monetarys.integration.rs.ClientContactsInfoRs;
+import ru.monetarys.integration.rs.ClientGeneralInfoRs;
+import ru.monetarys.integration.rs.ClientPersonalInfoRs;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -73,13 +73,13 @@ public class ClientProfileServiceImplUtil {
         return properties;
     }
 
-    public ClientGeneralInfo getClientGeneralInfoWithAccountList() {
-        ClientGeneralInfo client = new ClientGeneralInfo();
-        client.setAccountList(Arrays.asList(new ClientAccountInfo(), new ClientAccountInfo()));
+    public ClientGeneralInfoRs getClientGeneralInfoWithAccountList() {
+        ClientGeneralInfoRs client = new ClientGeneralInfoRs();
+        client.setAccountList(Arrays.asList(new ClientAccountInfoRs(), new ClientAccountInfoRs()));
         client.setGuid(GUID);
 
-        ClientContactsInfo contactsInfo = new ClientContactsInfo();
-        ClientPersonalInfo personalInfo = new ClientPersonalInfo();
+        ClientContactsInfoRs contactsInfo = new ClientContactsInfoRs();
+        ClientPersonalInfoRs personalInfo = new ClientPersonalInfoRs();
 
         contactsInfo.setPhoneNumber(PHONE_NUMBER);
         personalInfo.setFirstName(FIRST_NAME);
@@ -93,14 +93,14 @@ public class ClientProfileServiceImplUtil {
         return client;
     }
 
-    public ClientGeneralInfo getClientGeneralInfoWithEmptyAccountList() {
-        ClientGeneralInfo client = new ClientGeneralInfo();
+    public ClientGeneralInfoRs getClientGeneralInfoWithEmptyAccountList() {
+        ClientGeneralInfoRs client = new ClientGeneralInfoRs();
         client.setAccountList(Collections.emptyList());
         return client;
     }
 
-    public ClientGeneralInfo getEmptyClientGeneralInfo() {
-        return new ClientGeneralInfo();
+    public ClientGeneralInfoRs getEmptyClientGeneralInfo() {
+        return new ClientGeneralInfoRs();
     }
 
 }

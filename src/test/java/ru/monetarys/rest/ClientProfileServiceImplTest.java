@@ -11,11 +11,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 import ru.monetarys.integration.domain.ClientGeneralInfo;
+import ru.monetarys.integration.mapper.ClientProfileRsMapper;
+import ru.monetarys.integration.mapper.ClientProfileRsMapperImpl;
 import ru.monetarys.integration.rs.ClientGeneralInfoRs;
 import ru.monetarys.exceptions.ClientException;
 import ru.monetarys.exceptions.ClientErrorCode;
 import ru.monetarys.integration.ApplicationProperties;
 import ru.monetarys.integration.service.ClientProfileServiceImpl;
+import ru.monetarys.web.mapper.TransferRequestRoMapperImpl;
 
 import java.net.URI;
 
@@ -32,12 +35,17 @@ class ClientProfileServiceImplTest {
     @Mock
     private RestTemplate restTemplate;
 
-    private final ApplicationProperties properties = getApplicationProperties();
+    private final ApplicationProperties properties;
+    private final ClientProfileRsMapper rsMapper;
+
+    {
+        properties = getApplicationProperties();
+        rsMapper = new ClientProfileRsMapperImpl();
+    }
 
     @BeforeEach
     public void setup() {
-        // FIXME: null should not be passed as the third parameter
-        service = new ClientProfileServiceImpl(restTemplate, properties, null);
+        service = new ClientProfileServiceImpl(restTemplate, properties, rsMapper);
     }
 
     @Test
