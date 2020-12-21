@@ -28,12 +28,13 @@ public class TransferValidateHelper {
     public <Y extends TransferValidateException> void throwIfNotValid(Class<Y> exceptionClass) {
         if (!errorCodes.isEmpty()) {
 
-            Y exception = null;
+            Y exception;
 
             try {
                 exception = exceptionClass.getDeclaredConstructor().newInstance();
             } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 log.error(e.toString());
+                return;
             }
 
             errorCodes.forEach(exception::addCode);
