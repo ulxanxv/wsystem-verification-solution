@@ -11,6 +11,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.monetarys.integration.messages.TransferConsumer;
+import ru.monetarys.logic.TransferManager;
 
 import static org.mockito.Mockito.*;
 
@@ -19,6 +20,9 @@ public class TransferFeedbackConsumerTest {
 
     @Mock
     private RabbitTemplate rabbitTemplate;
+
+    @Mock
+    private TransferManager transferManager;
 
     @Spy
     @InjectMocks
