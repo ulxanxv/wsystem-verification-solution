@@ -6,7 +6,8 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
-import ru.monetarys.integration.messages.entities.Transfer;
+import ru.monetarys.integration.messages.entities.TransferFeedback;
+import ru.monetarys.logic.TransferManager;
 
 @Getter
 @Service
@@ -14,11 +15,12 @@ import ru.monetarys.integration.messages.entities.Transfer;
 public class TransferConsumer {
 
     private final RabbitTemplate rabbitTemplate;
+    private final TransferManager transferManager;
 
     @RabbitListener(queues = "${application.mq-transfer-properties.queue-name}")
     public void receiveTransfer(Message message) {
-        Transfer transfer = ((Transfer) rabbitTemplate.getMessageConverter().fromMessage(message));
-        // TODO: something...
+        TransferFeedback transferFeedback = ((TransferFeedback) rabbitTemplate.getMessageConverter().fromMessage(message));
+        transferManager.updateTransferStatus(transferFeedback);
     }
 
 }

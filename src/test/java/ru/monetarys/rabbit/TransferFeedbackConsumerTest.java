@@ -15,7 +15,7 @@ import ru.monetarys.integration.messages.TransferConsumer;
 import static org.mockito.Mockito.*;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
-public class TransferConsumerTest {
+public class TransferFeedbackConsumerTest {
 
     @Mock
     private RabbitTemplate rabbitTemplate;

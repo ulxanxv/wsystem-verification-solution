@@ -19,8 +19,8 @@ public class TransferSenderUtil {
     public String IN_EXCHANGE = "bank_transfers.in";
     public String ROUTING_KEY = "monetarys.rk";
 
-    public Transfer getTransferRequestWithData() {
-        Transfer transfer = new Transfer();
+    public TransferFeedback getTransferRequestWithData() {
+        TransferFeedback transferFeedback = new TransferFeedback();
 
         Header header = new Header();
         header.setMessageId(MESSAGE_ID);
@@ -43,11 +43,11 @@ public class TransferSenderUtil {
         sender.setOriginator(ORIGINATOR);
         sender.setAccountNumber(ACCOUNT_NUMBER);
 
-        transfer.setHeader(header);
-        transfer.setIbsoData(ibsoData);
-        transfer.setReceiver(receiver);
-        transfer.setSender(sender);
-        return transfer;
+        transferFeedback.setHeader(header);
+        transferFeedback.setIbsoData(ibsoData);
+        transferFeedback.setReceiver(receiver);
+        transferFeedback.setSender(sender);
+        return transferFeedback;
     }
 
 }

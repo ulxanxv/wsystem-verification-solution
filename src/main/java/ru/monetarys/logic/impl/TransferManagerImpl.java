@@ -1,15 +1,15 @@
 package ru.monetarys.logic.impl;
 
+import javassist.NotFoundException;
 import liquibase.util.StringUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Component;
-import ru.monetarys.exceptions.ClientErrorCode;
-import ru.monetarys.exceptions.ClientException;
-import ru.monetarys.exceptions.TransferErrorCode;
-import ru.monetarys.exceptions.TransferIntegrationValidateException;
+import ru.monetarys.exceptions.*;
 import ru.monetarys.config.ApplicationProperties;
 import ru.monetarys.domain.integration.ClientAccountInfo;
 import ru.monetarys.domain.integration.ClientGeneralInfo;
+import ru.monetarys.integration.messages.entities.TransferFeedback;
 import ru.monetarys.integration.service.ClientProfileService;
 import ru.monetarys.logic.TransferManager;
 import ru.monetarys.dao.models.Transfer;
@@ -20,6 +20,7 @@ import ru.monetarys.web.helper.TransferValidateHelper;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -45,6 +46,19 @@ public class TransferManagerImpl implements TransferManager {
         validateData(transferRequest, payee, payer, payerAccount, payeeAccount);
 
         return saveTransfer(transferRequest, payer, payee, payeeAccount);
+    }
+
+    @Override
+    public void updateTransferStatus(TransferFeedback transferFeedback) {
+        String transactionId = transferFeedback.getHeader().getTransactionId();
+        Transfer byTransactionId = transferRepository
+                .findByTransactionId(transactionId)
+                .orElseThrow(
+                        () -> new TransferNotFoundException("Информация о переводе " + transactionId + " не найдена!")
+                );
+
+        byTransactionId.setStatus(transferFeedback.getHeader().getTransactionStatus());
+        transferRepository.save(byTransactionId);
     }
 
     private Transfer saveTransfer(TransferRequest transferRequest, ClientGeneralInfo payer,

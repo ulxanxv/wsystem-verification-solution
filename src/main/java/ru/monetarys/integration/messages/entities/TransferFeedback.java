@@ -3,7 +3,7 @@ package ru.monetarys.integration.messages.entities;
 import lombok.Data;
 
 @Data
-public class Transfer {
+public class TransferFeedback {
 
     private Header header;
     private Sender sender;

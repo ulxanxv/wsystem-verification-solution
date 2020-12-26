@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
-import ru.monetarys.integration.messages.entities.Transfer;
+import ru.monetarys.integration.messages.entities.TransferFeedback;
 import ru.monetarys.config.ApplicationProperties;
 
 import java.util.UUID;
@@ -17,7 +17,7 @@ public class TransferSender {
     private final RabbitTemplate rabbitTemplate;
     private final ApplicationProperties properties;
 
-    public void sendMessage(Transfer request) {
+    public void sendMessage(TransferFeedback request) {
         request.getHeader().setMessageId(UUID.randomUUID().toString());
         rabbitTemplate.convertAndSend(
                 properties.getMqTransferProperties().getInExchangeName(),
