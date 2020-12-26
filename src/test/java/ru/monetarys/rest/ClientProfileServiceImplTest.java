@@ -4,25 +4,28 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
-import ru.monetarys.integration.domain.ClientGeneralInfo;
+import ru.monetarys.exceptions.ClientErrorCode;
+import ru.monetarys.exceptions.ClientException;
+import ru.monetarys.config.ApplicationProperties;
+import ru.monetarys.domain.integration.ClientGeneralInfo;
 import ru.monetarys.integration.mapper.ClientProfileRsMapper;
 import ru.monetarys.integration.mapper.ClientProfileRsMapperImpl;
-import ru.monetarys.integration.rs.ClientGeneralInfoRs;
-import ru.monetarys.exceptions.ClientException;
-import ru.monetarys.exceptions.ClientErrorCode;
-import ru.monetarys.integration.ApplicationProperties;
-import ru.monetarys.integration.service.ClientProfileServiceImpl;
-import ru.monetarys.web.mapper.TransferRequestRoMapperImpl;
+import ru.monetarys.rs.integration.ClientGeneralInfoRs;
+import ru.monetarys.integration.service.impl.ClientProfileServiceImpl;
 
 import java.net.URI;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
 import static ru.monetarys.rest.ClientProfileServiceImplUtil.*;
 
 @ExtendWith({MockitoExtension.class, SpringExtension.class})
@@ -35,13 +38,8 @@ class ClientProfileServiceImplTest {
     @Mock
     private RestTemplate restTemplate;
 
-    private final ApplicationProperties properties;
-    private final ClientProfileRsMapper rsMapper;
-
-    {
-        properties = getApplicationProperties();
-        rsMapper = new ClientProfileRsMapperImpl();
-    }
+    private final ApplicationProperties properties = getApplicationProperties();;
+    private final ClientProfileRsMapper rsMapper = new ClientProfileRsMapperImpl();;
 
     @BeforeEach
     public void setup() {

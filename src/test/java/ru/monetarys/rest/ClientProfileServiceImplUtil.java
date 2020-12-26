@@ -1,12 +1,12 @@
 package ru.monetarys.rest;
 
 import lombok.experimental.UtilityClass;
-import ru.monetarys.exceptions.domain.ErrorDefinition;
-import ru.monetarys.integration.ApplicationProperties;
-import ru.monetarys.integration.rs.ClientAccountInfoRs;
-import ru.monetarys.integration.rs.ClientContactsInfoRs;
-import ru.monetarys.integration.rs.ClientGeneralInfoRs;
-import ru.monetarys.integration.rs.ClientPersonalInfoRs;
+import ru.monetarys.domain.exception.ErrorDefinition;
+import ru.monetarys.config.ApplicationProperties;
+import ru.monetarys.rs.integration.ClientAccountInfoRs;
+import ru.monetarys.rs.integration.ClientContactsInfoRs;
+import ru.monetarys.rs.integration.ClientGeneralInfoRs;
+import ru.monetarys.rs.integration.ClientPersonalInfoRs;
 
 import java.util.Arrays;
 import java.util.Collections;

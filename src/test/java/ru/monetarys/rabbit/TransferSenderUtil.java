@@ -1,7 +1,7 @@
 package ru.monetarys.rabbit;
 
 import lombok.experimental.UtilityClass;
-import ru.monetarys.messages.entities.*;
+import ru.monetarys.integration.messages.entities.*;
 
 import java.time.LocalDateTime;
 

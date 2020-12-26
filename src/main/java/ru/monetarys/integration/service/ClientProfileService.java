@@ -1,6 +1,6 @@
 package ru.monetarys.integration.service;
 
-import ru.monetarys.integration.domain.ClientGeneralInfo;
+import ru.monetarys.domain.integration.ClientGeneralInfo;
 
 public interface ClientProfileService {
 

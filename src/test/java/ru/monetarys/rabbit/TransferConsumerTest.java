@@ -10,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ru.monetarys.messages.TransferConsumer;
+import ru.monetarys.integration.messages.TransferConsumer;
 
 import static org.mockito.Mockito.*;
 

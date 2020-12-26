@@ -1,7 +1,7 @@
 package ru.monetarys.web.service;
 
-import ru.monetarys.web.ro.TransferRequestRo;
-import ru.monetarys.web.ro.TransferResponseRo;
+import ru.monetarys.ro.web.TransferRequestRo;
+import ru.monetarys.ro.web.TransferResponseRo;
 
 public interface TransferService {
 

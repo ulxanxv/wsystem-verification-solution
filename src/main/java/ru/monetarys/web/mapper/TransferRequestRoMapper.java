@@ -1,24 +1,21 @@
 package ru.monetarys.web.mapper;
 
 import org.mapstruct.Mapper;
-import ru.monetarys.web.domain.Payee;
-import ru.monetarys.web.domain.Payer;
-import ru.monetarys.web.domain.Transaction;
-import ru.monetarys.web.domain.TransferRequest;
-import ru.monetarys.web.ro.PayeeRo;
-import ru.monetarys.web.ro.PayerRo;
-import ru.monetarys.web.ro.TransactionRo;
-import ru.monetarys.web.ro.TransferRequestRo;
+import ru.monetarys.domain.web.Payee;
+import ru.monetarys.domain.web.Payer;
+import ru.monetarys.domain.web.Transaction;
+import ru.monetarys.domain.web.TransferRequest;
+import ru.monetarys.ro.web.TransferRequestRo;
 
 @Mapper(componentModel = "spring")
 public interface TransferRequestRoMapper {
 
     TransferRequest to(TransferRequestRo source);
 
-    Transaction to(TransactionRo source);
+    Transaction to(TransferRequestRo.TransactionRo source);
 
-    Payer to(PayerRo source);
+    Payer to(TransferRequestRo.PayerRo source);
 
-    Payee to(PayeeRo source);
+    Payee to(TransferRequestRo.PayeeRo source);
 
 }

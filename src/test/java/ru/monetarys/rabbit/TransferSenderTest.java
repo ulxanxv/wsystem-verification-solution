@@ -9,9 +9,9 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ru.monetarys.messages.TransferSender;
-import ru.monetarys.messages.entities.Transfer;
-import ru.monetarys.integration.ApplicationProperties;
+import ru.monetarys.integration.messages.TransferSender;
+import ru.monetarys.integration.messages.entities.Transfer;
+import ru.monetarys.config.ApplicationProperties;
 
 import static org.mockito.Mockito.*;
 import static ru.monetarys.rabbit.TransferSenderUtil.*;

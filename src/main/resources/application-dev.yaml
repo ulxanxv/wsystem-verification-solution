@@ -126,11 +126,13 @@ application:
         msg: 'Не совпадают валюты счетов. Перевод не возможен.'
 ## AVAILABLE DATA
     availableAccountCurrencies: RUB
-    availablePayerAccountStatuses: 'work'
+    availablePayerAccountStatuses: work
     availablePayerAccountTypes: Текущий, Накопительный
-    availablePayeeAccountStatuses: 'work'
+    availablePayeeAccountStatuses: work
     availablePayeeAccountTypes: Текущий, Накопительный
     availableCitizenshipCountryCode: 643
+    unavailableAccountsRegex: 40111\d{15}, 40222\d{15}, 40333\d{15}
+    phoneRegex: ^[0-9]{10}$
     operationCode: 5
     operationCurrency: RUB
     transferDescription: 'В пользу другого клиента'

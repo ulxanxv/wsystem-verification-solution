@@ -1,14 +1,14 @@
 package ru.monetarys.integration.mapper;
 
 import org.mapstruct.Mapper;
-import ru.monetarys.integration.domain.ClientAccountInfo;
-import ru.monetarys.integration.domain.ClientContactsInfo;
-import ru.monetarys.integration.domain.ClientGeneralInfo;
-import ru.monetarys.integration.domain.ClientPersonalInfo;
-import ru.monetarys.integration.rs.ClientAccountInfoRs;
-import ru.monetarys.integration.rs.ClientContactsInfoRs;
-import ru.monetarys.integration.rs.ClientGeneralInfoRs;
-import ru.monetarys.integration.rs.ClientPersonalInfoRs;
+import ru.monetarys.domain.integration.ClientAccountInfo;
+import ru.monetarys.domain.integration.ClientContactsInfo;
+import ru.monetarys.domain.integration.ClientGeneralInfo;
+import ru.monetarys.domain.integration.ClientPersonalInfo;
+import ru.monetarys.rs.integration.ClientAccountInfoRs;
+import ru.monetarys.rs.integration.ClientContactsInfoRs;
+import ru.monetarys.rs.integration.ClientGeneralInfoRs;
+import ru.monetarys.rs.integration.ClientPersonalInfoRs;
 
 @Mapper(componentModel = "spring")
 public interface ClientProfileRsMapper {
