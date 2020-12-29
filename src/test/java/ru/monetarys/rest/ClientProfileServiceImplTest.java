@@ -4,21 +4,28 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
-import ru.monetarys.dto.ClientGeneralInfo;
+import ru.monetarys.exceptions.ClientErrorCode;
 import ru.monetarys.exceptions.ClientException;
-import ru.monetarys.exceptions.ErrorCode;
-import ru.monetarys.services.clientprofile.ApplicationProperties;
-import ru.monetarys.services.clientprofile.ClientProfileServiceImpl;
+import ru.monetarys.config.ApplicationProperties;
+import ru.monetarys.domain.integration.ClientGeneralInfo;
+import ru.monetarys.integration.mapper.ClientProfileRsMapper;
+import ru.monetarys.integration.mapper.ClientProfileRsMapperImpl;
+import ru.monetarys.rs.integration.ClientGeneralInfoRs;
+import ru.monetarys.integration.service.impl.ClientProfileServiceImpl;
 
 import java.net.URI;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
 import static ru.monetarys.rest.ClientProfileServiceImplUtil.*;
 
 @ExtendWith({MockitoExtension.class, SpringExtension.class})
@@ -31,11 +38,12 @@ class ClientProfileServiceImplTest {
     @Mock
     private RestTemplate restTemplate;
 
-    private final ApplicationProperties properties = getApplicationProperties();
+    private final ApplicationProperties properties = getApplicationProperties();;
+    private final ClientProfileRsMapper rsMapper = new ClientProfileRsMapperImpl();;
 
     @BeforeEach
     public void setup() {
-        service = new ClientProfileServiceImpl(restTemplate, properties);
+        service = new ClientProfileServiceImpl(restTemplate, properties, rsMapper);
     }
 
     @Test
@@ -43,9 +51,9 @@ class ClientProfileServiceImplTest {
         Mockito.when(restTemplate.getForEntity(any(), any()))
                 .thenReturn(ResponseEntity.ok(getClientGeneralInfoWithAccountList()));
 
-        ClientGeneralInfo test = service.getClientInfoByGUID(GUID);
+        ClientGeneralInfo test = service.getClientInfoByGuid(GUID);
 
-        Mockito.verify(restTemplate, Mockito.times(1)).getForEntity(eq(URI.create(URL)), eq(ClientGeneralInfo.class));
+        Mockito.verify(restTemplate, Mockito.times(1)).getForEntity(eq(URI.create(URL)), eq(ClientGeneralInfoRs.class));
 
 
         Assertions.assertNotNull(test);
@@ -65,12 +73,12 @@ class ClientProfileServiceImplTest {
 
         ClientException clientException = Assertions.assertThrows(
                 ClientException.class,
-                () -> service.getClientInfoByGUID(GUID)
+                () -> service.getClientInfoByGuid(GUID)
         );
 
         Mockito.verify(restTemplate, Mockito.times(1)).getForEntity(any(), any());
 
-        Assertions.assertEquals(ErrorCode.PROFILE_NOT_FOUND, clientException.getErrorCode());
+        Assertions.assertEquals(ClientErrorCode.PROFILE_NOT_FOUND, clientException.getClientErrorCode());
     }
 
     @Test
@@ -80,12 +88,12 @@ class ClientProfileServiceImplTest {
 
         ClientException clientException = Assertions.assertThrows(
                 ClientException.class,
-                () -> service.getClientInfoByGUID(GUID)
+                () -> service.getClientInfoByGuid(GUID)
         );
 
         Mockito.verify(restTemplate, Mockito.times(1)).getForEntity(any(), any());
 
-        Assertions.assertEquals(ErrorCode.PROFILE_NOT_FOUND, clientException.getErrorCode());
+        Assertions.assertEquals(ClientErrorCode.PROFILE_NOT_FOUND, clientException.getClientErrorCode());
     }
 
     @Test
@@ -96,12 +104,12 @@ class ClientProfileServiceImplTest {
 
         ClientException clientException = Assertions.assertThrows(
                 ClientException.class,
-                () -> service.getClientInfoByGUID(GUID)
+                () -> service.getClientInfoByGuid(GUID)
         );
 
         Mockito.verify(restTemplate, Mockito.times(1)).getForEntity(any(), any());
 
-        Assertions.assertEquals(ErrorCode.ACCOUNT_NOT_FOUND, clientException.getErrorCode());
+        Assertions.assertEquals(ClientErrorCode.ACCOUNT_NOT_FOUND, clientException.getClientErrorCode());
     }
 
     @Test
@@ -112,12 +120,12 @@ class ClientProfileServiceImplTest {
 
         ClientException clientException = Assertions.assertThrows(
                 ClientException.class,
-                () -> service.getClientInfoByGUID(GUID)
+                () -> service.getClientInfoByGuid(GUID)
         );
 
         Mockito.verify(restTemplate, Mockito.times(1)).getForEntity(any(), any());
 
-        Assertions.assertEquals(ErrorCode.ACCOUNT_NOT_FOUND, clientException.getErrorCode());
+        Assertions.assertEquals(ClientErrorCode.ACCOUNT_NOT_FOUND, clientException.getClientErrorCode());
     }
 
 }

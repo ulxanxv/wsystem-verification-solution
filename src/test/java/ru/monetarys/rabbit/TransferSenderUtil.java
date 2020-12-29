@@ -1,7 +1,7 @@
 package ru.monetarys.rabbit;
 
 import lombok.experimental.UtilityClass;
-import ru.monetarys.messages.entities.*;
+import ru.monetarys.integration.messages.entities.*;
 
 import java.time.LocalDateTime;
 
@@ -19,8 +19,8 @@ public class TransferSenderUtil {
     public String IN_EXCHANGE = "bank_transfers.in";
     public String ROUTING_KEY = "monetarys.rk";
 
-    public TransferRequest getTransferRequestWithData() {
-        TransferRequest transferRequest = new TransferRequest();
+    public TransferFeedback getTransferRequestWithData() {
+        TransferFeedback transferFeedback = new TransferFeedback();
 
         Header header = new Header();
         header.setMessageId(MESSAGE_ID);
@@ -43,11 +43,11 @@ public class TransferSenderUtil {
         sender.setOriginator(ORIGINATOR);
         sender.setAccountNumber(ACCOUNT_NUMBER);
 
-        transferRequest.setHeader(header);
-        transferRequest.setIbsoData(ibsoData);
-        transferRequest.setReceiver(receiver);
-        transferRequest.setSender(sender);
-        return transferRequest;
+        transferFeedback.setHeader(header);
+        transferFeedback.setIbsoData(ibsoData);
+        transferFeedback.setReceiver(receiver);
+        transferFeedback.setSender(sender);
+        return transferFeedback;
     }
 
 }

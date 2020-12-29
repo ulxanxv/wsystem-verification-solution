@@ -1,14 +1,17 @@
 package ru.monetarys.rest;
 
 import lombok.experimental.UtilityClass;
-import ru.monetarys.dto.ClientAccountInfo;
-import ru.monetarys.dto.ClientContactsInfo;
-import ru.monetarys.dto.ClientGeneralInfo;
-import ru.monetarys.dto.ClientPersonalInfo;
-import ru.monetarys.services.clientprofile.ApplicationProperties;
+import ru.monetarys.domain.exception.ErrorDefinition;
+import ru.monetarys.config.ApplicationProperties;
+import ru.monetarys.rs.integration.ClientAccountInfoRs;
+import ru.monetarys.rs.integration.ClientContactsInfoRs;
+import ru.monetarys.rs.integration.ClientGeneralInfoRs;
+import ru.monetarys.rs.integration.ClientPersonalInfoRs;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @UtilityClass
 public class ClientProfileServiceImplUtil {
@@ -39,11 +42,25 @@ public class ClientProfileServiceImplUtil {
         /*
          * ClientProfileService
          * */
-        properties.getClientProfileService().setAccountNotFoundMessage("Не найден ни один счёт клиента");
         properties.getClientProfileService().setClientInfoByGuidPath("/v1/clientInfoByGUID");
         properties.getClientProfileService().setHost("http://clientprofile.internal.anybank.ru");
-        properties.getClientProfileService().setProfileNotFoundMessage("Не найден профиль клиента");
         properties.getClientProfileService().setSecret("QWRtaW46YWRtaW4=");
+
+        Map<String, ErrorDefinition> errorMappings = new HashMap<>();
+
+        ErrorDefinition definition = new ErrorDefinition();
+
+        definition.setAttributeName("clientGuid");
+        definition.setCode("ProfileNotFound");
+        definition.setMsg("Не найден профиль клиента");
+        errorMappings.put("PROFILE_NOT_FOUND", definition);
+
+        definition.setAttributeName("accountList");
+        definition.setCode("AccountNotFound");
+        definition.setMsg("Не найден ни один счёт клиента");
+        errorMappings.put("ACCOUNT_NOT_FOUND", definition);
+
+        properties.getClientProfileService().setErrorMappings(errorMappings);
 
         /*
          * ClientProfileProperties
@@ -56,13 +73,13 @@ public class ClientProfileServiceImplUtil {
         return properties;
     }
 
-    public ClientGeneralInfo getClientGeneralInfoWithAccountList() {
-        ClientGeneralInfo client = new ClientGeneralInfo();
-        client.setAccountList(Arrays.asList(new ClientAccountInfo(), new ClientAccountInfo()));
+    public ClientGeneralInfoRs getClientGeneralInfoWithAccountList() {
+        ClientGeneralInfoRs client = new ClientGeneralInfoRs();
+        client.setAccountList(Arrays.asList(new ClientAccountInfoRs(), new ClientAccountInfoRs()));
         client.setGuid(GUID);
 
-        ClientContactsInfo contactsInfo = new ClientContactsInfo();
-        ClientPersonalInfo personalInfo = new ClientPersonalInfo();
+        ClientContactsInfoRs contactsInfo = new ClientContactsInfoRs();
+        ClientPersonalInfoRs personalInfo = new ClientPersonalInfoRs();
 
         contactsInfo.setPhoneNumber(PHONE_NUMBER);
         personalInfo.setFirstName(FIRST_NAME);
@@ -76,14 +93,14 @@ public class ClientProfileServiceImplUtil {
         return client;
     }
 
-    public ClientGeneralInfo getClientGeneralInfoWithEmptyAccountList() {
-        ClientGeneralInfo client = new ClientGeneralInfo();
+    public ClientGeneralInfoRs getClientGeneralInfoWithEmptyAccountList() {
+        ClientGeneralInfoRs client = new ClientGeneralInfoRs();
         client.setAccountList(Collections.emptyList());
         return client;
     }
 
-    public ClientGeneralInfo getEmptyClientGeneralInfo() {
-        return new ClientGeneralInfo();
+    public ClientGeneralInfoRs getEmptyClientGeneralInfo() {
+        return new ClientGeneralInfoRs();
     }
 
 }
