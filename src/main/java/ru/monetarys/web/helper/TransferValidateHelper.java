@@ -1,7 +1,6 @@
 package ru.monetarys.web.helper;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cglib.core.ReflectUtils;
 import org.springframework.data.util.ReflectionUtils;
 import ru.monetarys.exceptions.TransferErrorCode;
 import ru.monetarys.exceptions.TransferValidateException;
