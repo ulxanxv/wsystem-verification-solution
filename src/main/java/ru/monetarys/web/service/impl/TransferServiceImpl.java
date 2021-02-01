@@ -4,11 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.monetarys.exceptions.TransferErrorCode;
+import ru.monetarys.exceptions.TransferFilterValidateException;
 import ru.monetarys.exceptions.TransferValidateException;
 import ru.monetarys.config.ApplicationProperties;
 import ru.monetarys.logic.TransferManager;
 import ru.monetarys.dao.models.Transfer;
+import ru.monetarys.ro.web.TransferHistoryFilterRequestRo;
 import ru.monetarys.web.helper.TransferValidateHelper;
+import ru.monetarys.web.mapper.TransferFilterHistoryRequestRoMapper;
 import ru.monetarys.web.mapper.TransferRequestRoMapper;
 import ru.monetarys.ro.web.TransferRequestRo;
 import ru.monetarys.ro.web.TransferResponseRo;
@@ -18,6 +21,7 @@ import ru.monetarys.ro.web.TransferResponseRo.TransactionRo;
 import ru.monetarys.web.service.TransferService;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.regex.Pattern;
 
 @Service
@@ -25,6 +29,8 @@ import java.util.regex.Pattern;
 public class TransferServiceImpl implements TransferService {
 
     private final TransferRequestRoMapper transferRequestRoMapper;
+    private final TransferFilterHistoryRequestRoMapper transferFilterHistoryRequestRoMapper;
+
     private final ApplicationProperties applicationProperties;
     private final TransferManager transferManager;
 
@@ -35,6 +41,26 @@ public class TransferServiceImpl implements TransferService {
         return this.getTransferResponseRo(
                 transferManager.transferMoney(transferRequestRoMapper.to(transferRequestRo))
         );
+    }
+
+    @Override
+    public List<Transfer> transferHistoryByFilter(TransferHistoryFilterRequestRo filter) {
+        validateFilterRequest(filter);
+        return transferManager.transferHistoryByFilter(
+                transferFilterHistoryRequestRoMapper.to(filter)
+        );
+    }
+
+    private void validateFilterRequest(TransferHistoryFilterRequestRo filter) {
+        TransferValidateHelper.newInstance().validate(
+                filter.getPayerAccount(),
+                x -> !Pattern.matches("^\\d{16,22}$", x),
+                TransferErrorCode.PAYER_ACCOUNT_NOT_VALID
+            ).validate(
+                filter.getAmount(),
+                x -> x.getFrom().compareTo(BigDecimal.ZERO) <= 0 || x.getTo().compareTo(BigDecimal.ZERO) <= 0,
+                TransferErrorCode.AMOUNT_NOT_VALID
+            ).throwIfNotValid(TransferFilterValidateException.class);
     }
 
     private void validateUserRequest(TransferRequestRo transferRequestRo) {

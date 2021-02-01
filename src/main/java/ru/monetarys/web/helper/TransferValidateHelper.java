@@ -12,10 +12,10 @@ import java.util.function.Predicate;
 @Slf4j
 public class TransferValidateHelper {
 
-    private final Set<TransferErrorCode> errorCodes = new HashSet<>();;
+    private final Set<TransferErrorCode> errorCodes = new HashSet<>();
 
     public <T> TransferValidateHelper validate(T value, Predicate<T> predicate, TransferErrorCode errorCode) {
-        if (predicate.test(value)) {
+        if (value == null || predicate.test(value)) {
             errorCodes.add(errorCode);
         }
         return this;

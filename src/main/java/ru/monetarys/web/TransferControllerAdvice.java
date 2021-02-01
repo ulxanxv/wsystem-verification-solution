@@ -6,10 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.monetarys.exceptions.ClientException;
-import ru.monetarys.exceptions.TransferErrorCode;
-import ru.monetarys.exceptions.TransferIntegrationValidateException;
-import ru.monetarys.exceptions.TransferValidateException;
+import ru.monetarys.exceptions.*;
 import ru.monetarys.domain.exception.ErrorDefinition;
 import ru.monetarys.ro.exception.ErrorDefinitionRo;
 import ru.monetarys.ro.exception.ErrorRo;
@@ -64,6 +61,17 @@ public class TransferControllerAdvice {
                 .code(definition.getCode())
                 .build()
         );
+
+        return errorRo;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(TransferFilterValidateException.class)
+    public ErrorRo handleTransferFilterValidateException(TransferFilterValidateException exception) {
+        logException(exception);
+
+        ErrorRo errorRo = new ErrorRo("transfer-filter-history.Error");
+        errorRo.setAttributeErrors(getErrorDefinitionRo(exception));
 
         return errorRo;
     }

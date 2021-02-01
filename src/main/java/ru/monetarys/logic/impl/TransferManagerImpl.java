@@ -1,27 +1,31 @@
 package ru.monetarys.logic.impl;
 
-import javassist.NotFoundException;
+import com.querydsl.core.types.Predicate;
 import liquibase.util.StringUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-import ru.monetarys.exceptions.*;
 import ru.monetarys.config.ApplicationProperties;
-import ru.monetarys.domain.integration.ClientAccountInfo;
-import ru.monetarys.domain.integration.ClientGeneralInfo;
-import ru.monetarys.integration.messages.entities.TransferFeedback;
-import ru.monetarys.integration.service.ClientProfileService;
-import ru.monetarys.logic.TransferManager;
 import ru.monetarys.dao.models.Transfer;
 import ru.monetarys.dao.models.TransferStatus;
 import ru.monetarys.dao.repositories.TransferRepository;
+import ru.monetarys.domain.integration.ClientAccountInfo;
+import ru.monetarys.domain.integration.ClientGeneralInfo;
+import ru.monetarys.domain.web.TransferHistoryFilterRequest;
 import ru.monetarys.domain.web.TransferRequest;
+import ru.monetarys.exceptions.*;
+import ru.monetarys.integration.messages.entities.TransferFeedback;
+import ru.monetarys.integration.service.ClientProfileService;
+import ru.monetarys.logic.TransferManager;
+import ru.monetarys.util.QPredicateUtil;
 import ru.monetarys.web.helper.TransferValidateHelper;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
+
+import static ru.monetarys.dao.models.QTransfer.transfer;
 
 @Component
 @RequiredArgsConstructor
@@ -46,6 +50,26 @@ public class TransferManagerImpl implements TransferManager {
         validateData(transferRequest, payee, payer, payerAccount, payeeAccount);
 
         return saveTransfer(transferRequest, payer, payee, payeeAccount);
+    }
+
+    @Override
+    public List<Transfer> transferHistoryByFilter(TransferHistoryFilterRequest filter) {
+        Predicate predicate = QPredicateUtil.builder()
+                .add(
+                        filter.getPeriod(),
+                        x -> transfer.creationDate.between(x.getFrom(), x.getTo())
+                ).add(
+                        filter.getAmount(),
+                        x -> transfer.amount.between(x.getFrom(), x.getTo())
+                ).add(
+                        filter.getPayerAccount(),
+                        transfer.payerAccount::eq
+                ).add(
+                        this.getTransferStatusesListIfExists(filter.getStatuses()),
+                        transfer.status::in
+                ).buildOr();
+
+        return transferRepository.findAll(predicate, Pageable.unpaged()).getContent();
     }
 
     @Override
@@ -81,15 +105,15 @@ public class TransferManagerImpl implements TransferManager {
         TransferValidateHelper.newInstance()
                 .validate(
                     applicationProperties.getTransferMoney().getAvailablePayerAccountStatuses(),
-                    x -> Arrays.asList(x).contains(payerAccount.getAccountStatus()),
+                    x -> x.contains(payerAccount.getAccountStatus()),
                     TransferErrorCode.INCORRECT_PAYER_ACCOUNT_STATUS
                 ).validate(
                     applicationProperties.getTransferMoney().getAvailablePayerAccountTypes(),
-                    x -> Arrays.asList(x).contains(payerAccount.getAccountType()),
+                    x -> x.contains(payerAccount.getAccountType()),
                     TransferErrorCode.INCORRECT_PAYER_ACCOUNT_TYPE
                 ).validate(
                     applicationProperties.getTransferMoney().getAvailableAccountCurrencies(),
-                    x -> Arrays.asList(x).contains(payerAccount.getCurrency()),
+                    x -> x.contains(payerAccount.getCurrency()),
                     TransferErrorCode.INCORRECT_PAYER_ACCOUNT_CURRENCY
                 ).validate(
                     payerAccount.getBalance(),
@@ -105,15 +129,15 @@ public class TransferManagerImpl implements TransferManager {
         TransferValidateHelper.newInstance()
                 .validate(
                     applicationProperties.getTransferMoney().getAvailablePayeeAccountStatuses(),
-                    x -> Arrays.asList(x).contains(payeeAccount.getAccountStatus()),
+                    x -> x.contains(payeeAccount.getAccountStatus()),
                     TransferErrorCode.INCORRECT_PAYEE_ACCOUNT_STATUS
                 ).validate(
                     applicationProperties.getTransferMoney().getAvailablePayeeAccountTypes(),
-                    x -> Arrays.asList(x).contains(payeeAccount.getAccountType()),
+                    x -> x.contains(payeeAccount.getAccountType()),
                     TransferErrorCode.INCORRECT_PAYEE_ACCOUNT_TYPE
                 ).validate(
                     applicationProperties.getTransferMoney().getAvailableAccountCurrencies(),
-                    x -> Arrays.asList(x).contains(payeeAccount.getCurrency()),
+                    x -> x.contains(payeeAccount.getCurrency()),
                     TransferErrorCode.INCORRECT_PAYEE_ACCOUNT_CURRENCY
                 ).validate(
                     applicationProperties.getTransferMoney().getAvailableCitizenshipCountryCode(),
@@ -128,6 +152,17 @@ public class TransferManagerImpl implements TransferManager {
                     x -> x.equals(payeeAccount.getCurrency()),
                     TransferErrorCode.CURRENCIES_NOT_MATCHING
                 ).throwIfNotValid(TransferIntegrationValidateException.class);
+    }
+
+    private List<TransferStatus> getTransferStatusesListIfExists(List<String> statuses) {
+        if (statuses != null) {
+            return statuses.stream()
+                    .map(TransferStatus::byName)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+        } else {
+            return null;
+        }
     }
 
     private ClientAccountInfo getAccount(List<ClientAccountInfo> accounts, String account, String guid) {
